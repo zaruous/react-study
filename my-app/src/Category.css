@@ -1,0 +1,13 @@
+.Category{
+    min-height: 3vh;
+    background-color: gold;
+    text-align: left;
+}
+
+.Category ul li {
+    display: inline;
+    list-style: none;
+    outline: 1px dotted red;
+    margin-left: 1vh;
+
+}
