@@ -18,23 +18,23 @@ function TableComponent(props){
     };      
     return (
         <div className='TableComponent'>
-            <table border='1px'>
-                <thead>
+            <table border='1px' id='tb-content'>
+            <thead>
+                <tr>
                     {
-                        obj.header.map( a =>{
+                        obj.header.map( (a, index) =>{
                             return (
-                                <th>{a}</th>
+                                <th key={index}>{a}</th>
                             );
                         })
                     }
-                   
-                </thead>
-                <tbody>
+                </tr>
+            </thead>
+            <tbody>
                     {
-                        obj.data.map( a=>{
+                        obj.data.map(  (a, index)=>{
                             return(
-                                <tr>
-                                    
+                                <tr key={index}>
                                     <td>{a.fruit}</td>
                                     <td>{a.price}</td>
                                     <td>{a.ea}</td>
@@ -42,9 +42,7 @@ function TableComponent(props){
                             );
                         })
                     }
-                 
-                   
-                </tbody>
+            </tbody>
             </table>
         </div>
     );

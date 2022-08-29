@@ -1,13 +1,11 @@
-import logo from './logo.svg';
 import './App.css';
 import './TableComponent';
 import TableComponent from './TableComponent';
 import Category from "./Category";
-import {Component} from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import TableComponent2 from "./TableComponent2";
-
-
+import DiaryWrite from "./DiaryWrite";
+import DiaryList from "./DiaryList";
+import News from "./News";
 function App() {
   return (
     <div className="App">
@@ -22,8 +20,9 @@ function App() {
             <Category></Category>
             <Routes>
                 <Route path="/" element={ <TableComponent/> }></Route>
-                <Route path="/diary-write" element={ <TableComponent/> }></Route>
-                <Route path="/diary-list" element={ <TableComponent2/> }></Route>
+                <Route path="/diary-write" element={ <DiaryWrite/> }></Route>
+                <Route path="/diary-list" element={ <DiaryList/> }></Route>
+                <Route path="/news" element={ <News/> }></Route>
             </Routes>
 
         </BrowserRouter>
