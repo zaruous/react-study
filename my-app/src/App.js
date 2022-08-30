@@ -5,7 +5,9 @@ import Category from "./Category";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import DiaryWrite from "./DiaryWrite";
 import DiaryList from "./DiaryList";
+import NotFound from "./NotFound";
 import News from "./News";
+import StartPage from "./StartPage";
 function App() {
   return (
     <div className="App">
@@ -19,10 +21,11 @@ function App() {
             </header>
             <Category></Category>
             <Routes>
-                <Route path="/" element={ <TableComponent/> }></Route>
+                <Route path="/" element={<StartPage/>} ></Route>
                 <Route path="/diary-write" element={ <DiaryWrite/> }></Route>
                 <Route path="/diary-list" element={ <DiaryList/> }></Route>
                 <Route path="/news" element={ <News/> }></Route>
+                <Route path="*" element={ <NotFound/> }></Route>
             </Routes>
 
         </BrowserRouter>
