@@ -9,6 +9,7 @@ function Category() {
             <li><Link to="/diary-write">작성</Link></li>
             <li><Link to="/diary-list">목록</Link></li>
             <li><Link to="/news">뉴스</Link></li>
+            <li><Link to="/userList">사용자리스트</Link></li>
         </ul>
         </div>);
 }

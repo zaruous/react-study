@@ -7,6 +7,7 @@ import DiaryWrite from "./DiaryWrite";
 import DiaryList from "./DiaryList";
 import NotFound from "./NotFound";
 import News from "./News";
+import UserList from "./UserList";
 import StartPage from "./StartPage";
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
                 <Route path="/diary-write" element={ <DiaryWrite/> }></Route>
                 <Route path="/diary-list" element={ <DiaryList/> }></Route>
                 <Route path="/news" element={ <News/> }></Route>
+                <Route path="/userList" element={ <UserList/> }></Route>
                 <Route path="*" element={ <NotFound/> }></Route>
             </Routes>
 

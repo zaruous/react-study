@@ -5,9 +5,18 @@ import axios from 'axios';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {IDateJS} from 'datejs';
-
+import React, { useEffect } from 'react';
 
 function News(){
+
+    // not working.
+    function componentDidMount(){
+        alert('did mount.');
+    }
+    
+    useEffect(() => {
+        console.log("렌더링 될때마다 실행");
+    }, []);
 
     //updateNewData();
 
