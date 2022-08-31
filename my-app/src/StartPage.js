@@ -1,9 +1,9 @@
-import React from 'react';
+import CChildren from './CChildren';
 
 const StartPage = () => {
     return (
         <div>
-            Hello World!
+            <CChildren></CChildren>
         </div>
     );
 };
