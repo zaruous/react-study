@@ -1,24 +1,30 @@
 
-import TableComponent from "./TableComponent";
-import raw from './testdata.json';
+function DiaryList(props){
 
-function DiaryList(){
-
-    const items = raw.diaryItemList;
 
     return (
         <div id="DiaryList">
-            <TableComponent></TableComponent>
+            <table border='1px'>
+                <thead>
+                    <tr><th>제목</th><th>내용</th></tr>
+                </thead>
+                <tbody>
+                {
+                    props.diaryItem.map((a, index) =>{
+                        return (
+                        <tr key={index}>
+                            <td>{a.title}</td>
+                            <td>{a.content}</td>
+                        </tr>
+                        )
+                    })
+                }
+                </tbody>
+            </table>
         </div>
     );
 }
 
-function readFromFile(){
-    fetch(raw)
-    .then(r => r.json())
-    .then(r =>{
-        console.log(r.diaryItemList);
-    });
-}
+
 
 export default DiaryList;
