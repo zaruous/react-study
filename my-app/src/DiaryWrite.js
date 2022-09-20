@@ -1,10 +1,18 @@
 import './DiaryWrite.css';
 //import './DraftEditor';
 
-function DiaryWrite(){
+function DiaryWrite(props){
 
     const btnDiaryWriteWriteClick = ()=>{
-        alert('글작성');
+        
+        let txtTitle = document.getElementById('txt-DiaryWrite-title').value;
+        let txtContent = document.getElementById('textarea-DiaryWrite-content').value;
+       
+
+        props.diaryItem.push({
+            title:txtTitle,
+            content:txtContent
+        });
     };
 
     return(
@@ -15,6 +23,7 @@ function DiaryWrite(){
         <div>
             <span>Title : </span>
             <input type='text' id="txt-DiaryWrite-title"></input>
+            
         </div>
         <div>Content</div>
         <div><textarea id="textarea-DiaryWrite-content" rows={10}></textarea></div>
