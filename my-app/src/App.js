@@ -7,6 +7,8 @@ import NotFound from "./NotFound";
 import News from "./News";
 import UserList from "./UserList";
 import StartPage from "./StartPage";
+import KakaoMap from "./KakaoMap";
+import RegexComponent from './RegexComponent'
 function App() {
 
 
@@ -41,6 +43,8 @@ const diaryItem = [
                 <Route path="/diary-list" element={ <DiaryList diaryItem={diaryItem}/> }></Route>
                 <Route path="/news" element={ <News/> }></Route>
                 <Route path="/userList" element={ <UserList/> }></Route>
+                <Route path="/kakaomap" element={ <KakaoMap/> }></Route>
+                <Route path="/regex" element={ <RegexComponent/> }></Route>
                 <Route path="*" element={ <NotFound/> }></Route>
             </Routes>
 
