@@ -12,7 +12,7 @@ function News(){
 
     /* 온로드시 updateNewData함수를 호출한다. */
     useEffect(() => {
-        //updateNewData();
+        updateExchange();
     }, []);
 
     /* 화면이 로드될때 호출되는 함수 */
@@ -20,6 +20,7 @@ function News(){
     const [retJson, setretJson] = useState([]);
     const [exchange, setExchange] = useState([]);
     const [getNaverNews, setRetNaverNews] = useState([]);
+    const [naverRealtimeSearch, setNaverRealtimeSearch] = useState([]);
 
     /* 원달러 환율 api */
     function updateExchange() {
@@ -77,7 +78,6 @@ function News(){
     
     const onClick = function NewOnClick(){
         updateNewData();
-        updateExchange();
     }
 
     const onNaverClick = ()=>{
@@ -86,19 +86,14 @@ function News(){
 
     return (
         <div className="News">
-            <button onClick={onClick}>증권 뉴스</button>
-            <button onClick={onNaverClick}>네이버 뉴스</button>
-            {
-                /* exchange에 값이 존재하는 경우 exchange[0].rate 출력  */
-                exchange.length > 0 ? <div>원달러 환율 : <div>
-                                            <div>exchange.date : {exchange[1].date}</div>
-                                            <div>exchange.rate : {exchange[0].rate} : {exchange[1].rate}</div>
-                                            </div>
-                                        </div> : null
-            }
+            <div>원달러 환율 : </div>
+            <div>exchange.date : {exchange.length > 0? exchange[1].date: ""}</div>
+            <div>exchange.rate : {exchange.length > 0? exchange[0].rate : ""} : {exchange.length > 0? exchange[1].rate: ""}</div>
+         
             <div id="parentFlexContainer" style={styles.parentFlexContainer}>
                 <div className='childFlexItems flexLeft'>
-                    
+                    <button onClick={onClick} >증권 뉴스</button>
+                    <button onClick={onNaverClick}>네이버 뉴스</button>
                 </div>
                 <div className='childFlexItems flexRight' >
                     <table border='1px'>

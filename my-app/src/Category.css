@@ -9,5 +9,16 @@
     list-style: none;
     outline: 1px dotted red;
     margin-left: 1vh;
-
+    font-size: 1.5vh;
+    
 }
+
+/* 메뉴를 마우스에 대면 글자 크기가 2배로 커지고 텍스트가 빨간색으로 변경 css */
+.Category ul li:hover {
+    font-size: 2vh;
+    font-weight: bold;
+    color: red;
+}
+
+
+

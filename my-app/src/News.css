@@ -14,14 +14,26 @@
     width: 10%;
 }
 
+.flexLeft button{
+    display: block;
+    width: 100%;
+    margin-bottom: 1vh;
+}
+
+.flexLeft button:hover{
+    background-color: red;
+    transform: scale(1.1);
+    font-size: large;
+    /*커서 hand로 바꾸기*/
+    cursor: pointer;
+
+ }
+
 .flexRight{
     background-color: yellow;
     width: 90%;
 }
 
-.flexLeft:hover{
-   background-color: red;
-}
 
 .naverImage{
     width:300px;
