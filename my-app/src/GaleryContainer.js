@@ -7,12 +7,14 @@ function GaleryContainer() {
     return (
         <div className={'galeryGridContainer'} >
             <div className="item">
-                <img src="https://picsum.photos/200/300" alt="img1" />
+                <img src="https://picsum.photos/200/100" alt="img1" />
             </div>
             <div className="item">
-                <img src="/images/20190812_113208.jpg"/>
+                <img src="https://picsum.photos/200/200" alt="img1" />
             </div>
-            <div className="item">C</div>
+            <div className="item">
+                <img src="https://picsum.photos/200/301" alt="img1" />
+            </div>
             <div className="item">D</div>
             <div className="item">E</div>
             <div className="item">F</div>
