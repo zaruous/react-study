@@ -22,7 +22,7 @@
 
 .flexLeft button:hover{
     background-color: red;
-    transform: scale(1.1);
+    transform: scale(1.2);
     font-size: large;
     /*커서 hand로 바꾸기*/
     cursor: pointer;
@@ -41,6 +41,6 @@
 }
 
 .naverImage:hover , .economyImage:hover{
-    transform: scale(2);
+    transform: scale(1.2);
     border-radius: 2vh;
 }

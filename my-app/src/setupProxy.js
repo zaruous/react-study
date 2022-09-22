@@ -6,7 +6,7 @@ module.exports = (app) => {
       '/api-service',     
       {
         /* target: process.env.REACT_APP_API_URL,*/
-        target: "http://localhost:8090",
+        target: "http://localhost:8190",
         changeOrigin: true,
         /*
         router: {
