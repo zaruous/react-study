@@ -9,6 +9,8 @@ import UserList from "./UserList";
 import StartPage from "./StartPage";
 import KakaoMap from "./KakaoMap";
 import RegexComponent from './RegexComponent'
+import GaleryContainer from "./GaleryContainer";
+
 function App() {
 
 
@@ -45,6 +47,7 @@ const diaryItem = [
                 <Route path="/userList" element={ <UserList/> }></Route>
                 <Route path="/kakaomap" element={ <KakaoMap/> }></Route>
                 <Route path="/regex" element={ <RegexComponent/> }></Route>
+                <Route path="/galery" element={ <GaleryContainer/> }></Route>
                 <Route path="*" element={ <NotFound/> }></Route>
             </Routes>
 
@@ -54,3 +57,4 @@ const diaryItem = [
 }
 
 export default App;
+
