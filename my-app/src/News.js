@@ -28,7 +28,7 @@ function News(){
         axios(
             {
                 method:'GET',
-                url:'/api-service/News',
+                url:'/api-service/News/exchange',
                 headers:{
                     "Access-Control-Allow-Credentials":true,
                     "action":"exchange",
@@ -43,7 +43,7 @@ function News(){
        
         axios({
             method:'GET',
-            url:'/api-service/News',
+            url:'/api-service/News/getNews',
             headers:{
                 "Access-Control-Allow-Credentials":true,
                 "action":"getNews",
@@ -60,7 +60,7 @@ function News(){
     function naverNews(){
         axios({
             method:'GET',
-            url:'/api-service/News',
+            url:'/api-service/News/getNaverNews',
             headers:{
                 "Access-Control-Allow-Credentials":true,
                 "action":"getNaverNews",
