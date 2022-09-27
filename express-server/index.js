@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const axios = require('axios');
+const fs = require('fs');
 
 //환경변수에서 port를 가져온다. 환경변수가 없을시 8190 포트를 지정한다.
 const PORT = process.env.PORT || 8190;
@@ -45,6 +46,19 @@ app.get('/api-service/News/getNaverNews', (req, res) => {
     });
 });
 
+
+app.get('/api-service/bus/getStations', (req, res) => {
+    const station = req.query.get('station');
+    /* 인천광역시_시내버스 정류소 현황_20211117.json 제이슨 파일 읽기 */
+
+    const data = fs.readFileSync('인천광역시_시내버스 정류소 현황_20211117.json', 'utf8');
+    const json = JSON.parse(data);
+    const result = json.filter((item) => {
+        return item["정류소 명"].includes(station);
+    }
+
+
+}
 
 
 app.listen(PORT, () => {

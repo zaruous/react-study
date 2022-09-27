@@ -2,18 +2,54 @@ import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { useRef, useState } from "react";
 import { useEffect } from "react";
 
+
 function KakaoMap(){
 
-    
+    const moveX = useRef(null);
+    const moveY = useRef(null);
     const mapRef = useRef(null);
     const [info, setInfo] = useState();
-    const [markerPosition, setMarkerPosition] = useState({
-        center:
+    const [markerPosition1, setMarkerPosition1] = useState({
+        position:
         {
-            lat: 0,
-            lng: 0
+            lat: 37.36472625,
+            lng: 126.6578871,
         },
+        stationid: "39864",
+        stationName:"삼성바이오로직스",
     });
+    const [markerPosition2, setMarkerPosition2] = useState({
+        position:
+            {
+                lat: 37.36488705,
+                lng: 126.6576607
+            },
+        stationid: "39863",
+        stationName:"삼성바이오로직스",
+    });
+    const [markerPosition3, setMarkerPosition3] = useState({
+        position:
+            {
+                lat: 37.36913153,
+                lng:126.6569679
+            },
+        stationid: "39920",
+        stationName:"삼성바이오로직스",
+
+    });
+
+
+
+    const btnMoveOnClick = () => {
+        /* moveX의 값을 변수 x에 할당 */
+        const lat = moveX.current.value.trim();
+        const lng  = moveY.current.value.trim();
+
+        setState({
+            ...state,
+            center:{ lat:   lat, lng: lng },
+        })
+    };
 
     const [state, setState] = useState({
         // 지도의 초기 위치
@@ -91,18 +127,20 @@ function KakaoMap(){
                     });
                
             }}
-            onClick={(_t, mouseEvent) => setMarkerPosition({
-                center:{
-                    lat: mouseEvent.latLng.getLat(),
-                    lng: mouseEvent.latLng.getLng(),
-                }
-              })}
-
           >
-            
+
+
             <MapMarker
-                position={markerPosition.center}
-            />
+                position={markerPosition1.position}
+            >
+                <div style={{color:"#000"}}>{markerPosition1.stationName} {markerPosition1.stationid}</div>
+            </MapMarker>
+          <MapMarker
+              position={markerPosition2.position}
+          ><div style={{color:"#000"}}>{markerPosition2.stationName}    {markerPosition2.stationid}</div></MapMarker>
+          <MapMarker
+              position={markerPosition3.position}
+          ><div style={{color:"#000"}}>{markerPosition3.stationName}    {markerPosition3.stationid}</div></MapMarker>
 
             <div
               style={{
@@ -152,7 +190,14 @@ function KakaoMap(){
              }}>
                 정보 가져 오기!
             </button>
+            <div>
+                <input type={'text'} ref={moveX} />
+                <input type={'text'} ref={moveY}/>
+                <button onClick={btnMoveOnClick}>이동</button>
             </div>
+            </div>
+
+
 
           </Map>
           {info && (
