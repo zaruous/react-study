@@ -1,21 +1,50 @@
-
-
-.galeryGridContainer{
-    display:grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-    gridTemplateColumns: 'repeat(3, 1fr)';
+/* galeryContainer를 가운데 위치*/
+.galeryContainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #f5f5f5;
 
 }
+
+
+
+.galeryGridContainer {
+    display: grid;
+    grid-template-rows:  1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr ;
+    grid-gap: 1vh;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    padding: 0;
+    background-color: #f1f1f1;
+    width: 70%;
+    height: 100%;
+}
+
 .item {
-    align-self: stretch;
-    max-width: 1vh;
-    max-height: 1vh;
-    /* align-self: start; */
-    /* align-self: center; */
-    /* align-self: end; */
+    background-color: antiquewhite;
+}
+
+.divShowImage{
+    background-color: red;
+    height: 20vh;
+    grid-row: 1;
+    grid-column: 1 / span 4;
+}
+
+.title{
+    background-color: gold;
+}
+.title2{
+    background-color: coral;
 }
 
 .item img{
-    width: 30vh;
+    max-width: 100%;
 }
+.item img:hover{
+    cursor: pointer;
+}
+

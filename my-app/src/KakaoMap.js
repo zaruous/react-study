@@ -8,6 +8,8 @@ function KakaoMap(){
     const moveX = useRef(null);
     const moveY = useRef(null);
     const mapRef = useRef(null);
+    const txtStaionName = useRef(null);
+
     const [info, setInfo] = useState();
     const [markerPosition1, setMarkerPosition1] = useState({
         position:
@@ -58,7 +60,10 @@ function KakaoMap(){
         isPanto: false,
         level : 2,
     });
-    
+
+    const btnSearchStationOnClick = () => {
+
+    };
     //버스정류장 정보
 
 
@@ -194,6 +199,11 @@ function KakaoMap(){
                 <input type={'text'} ref={moveX} />
                 <input type={'text'} ref={moveY}/>
                 <button onClick={btnMoveOnClick}>이동</button>
+            </div>
+            <div>
+                버스 정류소 검색 :
+                <input type={'text'} ref={txtStaionName}/>
+                <button onClick={btnSearchStationOnClick}>정류소 검색</button>
             </div>
             </div>
 

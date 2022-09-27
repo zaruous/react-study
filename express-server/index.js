@@ -48,17 +48,24 @@ app.get('/api-service/News/getNaverNews', (req, res) => {
 
 
 app.get('/api-service/bus/getStations', (req, res) => {
-    const station = req.query.get('station');
+    const station = req.query['station'];
+	console.log(station);
+	if(station === "")
+	{
+		res.send([]);
+		return;
+	}
     /* 인천광역시_시내버스 정류소 현황_20211117.json 제이슨 파일 읽기 */
 
     const data = fs.readFileSync('인천광역시_시내버스 정류소 현황_20211117.json', 'utf8');
     const json = JSON.parse(data);
     const result = json.filter((item) => {
         return item["정류소 명"].includes(station);
-    }
+    });
 
-
-}
+	res.send(result);
+	
+});
 
 
 app.listen(PORT, () => {
