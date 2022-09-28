@@ -1,6 +1,7 @@
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 import { useRef, useState } from "react";
 import { useEffect } from "react";
+import axios from "axios";
 
 
 function KakaoMap(){
@@ -14,8 +15,8 @@ function KakaoMap(){
     const [markerPosition1, setMarkerPosition1] = useState({
         position:
         {
-            lat: 37.36472625,
-            lng: 126.6578871,
+            lat: 37.365866,
+            lng: 126.657946,
         },
         stationid: "39864",
         stationName:"삼성바이오로직스",
@@ -23,22 +24,15 @@ function KakaoMap(){
     const [markerPosition2, setMarkerPosition2] = useState({
         position:
             {
-                lat: 37.36488705,
-                lng: 126.6576607
+                lat: 37.364886,
+                lng: 126.65766
             },
         stationid: "39863",
         stationName:"삼성바이오로직스",
     });
-    const [markerPosition3, setMarkerPosition3] = useState({
-        position:
-            {
-                lat: 37.36913153,
-                lng:126.6569679
-            },
-        stationid: "39920",
-        stationName:"삼성바이오로직스",
 
-    });
+
+    const [busPositions, setBusPositions] = useState([]);
 
 
 
@@ -62,6 +56,40 @@ function KakaoMap(){
     });
 
     const btnSearchStationOnClick = () => {
+        const searchStationName = txtStaionName.current.value;
+        console.log(searchStationName);
+        /* axios를 통한 station 정보 호출 */
+        axios({
+            method:'GET',
+            url : "/api-service/bus/getStations",
+            header:{
+                "Access-Control-Allow-Credentials":true,
+            },
+            params:{
+                station:searchStationName,
+            },
+            responseType:'json'
+        }).then(res=>{
+
+
+            let ret = res.data.map((item)=>{
+                return (
+                    {
+                        position:
+                            {
+                                lat: item["위도"],
+                                lng: item["경도"]
+                            },
+                        stationid: item["정류장아이디"],
+                        stationName:item["정류장 명칭"],
+                    }
+                );
+            });
+            console.log(ret);
+            setBusPositions(ret);
+        }).errors(e=>{
+            alert(e);
+        });
 
     };
     //버스정류장 정보
@@ -143,10 +171,21 @@ function KakaoMap(){
           <MapMarker
               position={markerPosition2.position}
           ><div style={{color:"#000"}}>{markerPosition2.stationName}    {markerPosition2.stationid}</div></MapMarker>
-          <MapMarker
-              position={markerPosition3.position}
-          ><div style={{color:"#000"}}>{markerPosition3.stationName}    {markerPosition3.stationid}</div></MapMarker>
 
+              <div>
+                  {
+                      busPositions.map( (busPosition, index) => {
+                          return (
+                              <MapMarker
+                                  key={index}
+                                  position={busPosition.position}
+                              >
+                                  <div style={{color:"#000"}}>{busPosition.stationName} {busPosition.stationid}</div>
+                              </MapMarker>
+                          );
+                      })
+                  }
+              </div>
             <div
               style={{
                 display: "flex",

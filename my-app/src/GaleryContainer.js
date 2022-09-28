@@ -1,9 +1,23 @@
 
-import React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './GaleryContainer.css';
 
 
 function GaleryContainer() {
+
+
+    useEffect(() => {
+
+        console.log("useEffect");
+    }, []);
+
+
+    const imgOnClick = useCallback(
+        (e) => {
+            console.log("imgOnClick");
+        }
+    ,[]);
+
 
 
     return (
@@ -11,8 +25,8 @@ function GaleryContainer() {
 
                 <div className='galeryGridContainer' >
                     <div className='item divShowImage'></div>
-                    <div className="item title">
-                        <img src="./images/melon.png" alt="img1" />
+                    <div className="item title" onClick={imgOnClick}>
+                        <img src="./images/melon.png" alt="img1"  />
                         <div>1</div>
                     </div>
                     <div className="item title2">
