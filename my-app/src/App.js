@@ -10,10 +10,23 @@ import StartPage from "./StartPage";
 import KakaoMap from "./KakaoMap";
 import RegexComponent from './RegexComponent'
 import GaleryContainer from "./GaleryContainer";
+import Modal from 'react-modal';
+import {useRef, useState} from "react";
+import CallModalPopup from "./CallModalPopup";
+
 
 function App() {
 
+const [modalVisible, setModalVisible] = useState(false);
 
+const closeModal =  ()=> {
+    setModalVisible(false);
+}
+const showPopup = (message)=> {
+    setModalVisible(true);
+}
+
+const modalRef = useRef();
   
 const diaryItem = [
     {
@@ -25,11 +38,40 @@ const diaryItem = [
         content : 'hello2'
     }
 ];
-  
-//  diaryItem={this.state.diaryItem}
+
+const customModalStyle = {
+    content : {
+        top                   : '50%',
+        left                  : '50%',
+        right                 : 'auto',
+        bottom                : 'auto',
+        marginRight           : '-50%',
+        transform             : 'translate(-50%, -50%)',
+        width:'30%',
+        height:'30%',
+
+    }
+}
+
+const contentStyle = {
+    /*수직으로 가운데 정렬 */
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+}
 
   return (
     <div className="App">
+        {modalVisible && (
+            <Modal isOpen={modalVisible} onRequestClose={closeModal} style={customModalStyle} ref={modalRef}>
+                <div style={contentStyle}>
+                    <div style={{display:'span'}}>모달창</div>
+                    <button onClick={closeModal} style={{}}>닫기</button>
+                </div>
+            </Modal>
+        )}
         <BrowserRouter>
             <header className="App-header">
                 <a
@@ -48,6 +90,7 @@ const diaryItem = [
                 <Route path="/kakaomap" element={ <KakaoMap/> }></Route>
                 <Route path="/regex" element={ <RegexComponent/> }></Route>
                 <Route path="/galery" element={ <GaleryContainer/> }></Route>
+                <Route path="/callModalPopup" element={ <CallModalPopup showPopup={showPopup}/> }></Route>
                 <Route path="*" element={ <NotFound/> }></Route>
             </Routes>
 

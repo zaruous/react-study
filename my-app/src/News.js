@@ -1,14 +1,12 @@
 
-
-import raw from './testdata2.json';
 import axios from 'axios';
-import { useState } from 'react';
+import {useCallback, useState} from 'react';
 import { Link } from 'react-router-dom';
 import {IDateJS} from 'datejs';
 import React, { useEffect } from 'react';
 import styles from './News.css';
 
-function News(){
+function News(callback, deps){
 
     /* 온로드시 updateNewData함수를 호출한다. */
     useEffect(() => {
@@ -21,10 +19,10 @@ function News(){
     const [exchange, setExchange] = useState([]);
     const [getNaverNews, setRetNaverNews] = useState([]);
     const [naverRealtimeSearch, setNaverRealtimeSearch] = useState([]);
-
+    const [dailyByte, setDailyByte] = useState([]);
     /* 원달러 환율 api */
     function updateExchange() {
-
+        console.log("updateExchange");
         axios(
             {
                 method:'GET',
@@ -75,14 +73,31 @@ function News(){
             setRetNaverNews( arr );
         }).catch(e =>{ alert(e);})
     }
-    
-    const onClick = function NewOnClick(){
-        updateNewData();
-    }
 
-    const onNaverClick = ()=>{
+
+    
+    const onClick = useCallback(()=>{
+        updateNewData();
+    }, []);
+
+    const onNaverClick = useCallback(()=>{
         naverNews();
-    }
+    }, []);
+
+    const onDailyByteClick = useCallback(()=>{
+        axios({
+            method:'GET',
+            url:'/api-service/News/dailybytes',
+            headers:{
+                "Access-Control-Allow-Credentials":true,
+            },
+            responseType: 'json'
+        }).then(a => {
+            console.log(a.data);
+            setDailyByte(a.data);
+        }).catch(e =>{ alert(e);})
+
+    }, [setDailyByte]);
 
     return (
         <div className="News">
@@ -94,6 +109,7 @@ function News(){
                 <div className='childFlexItems flexLeft'>
                     <button onClick={onClick} >증권 뉴스</button>
                     <button onClick={onNaverClick}>네이버 뉴스</button>
+                    <button onClick={onDailyByteClick}>데일리바이트</button>
                 </div>
                 <div className='childFlexItems flexRight' >
                     <table border='1px'>
@@ -126,7 +142,21 @@ function News(){
                             }) : null
                         }   
                     </table>
-                   
+                    <table border='1px'>
+                        {
+                            dailyByte.map((item, index)=>{
+                                return (
+                                    <tr>
+                                        <td>{index+1}</td>
+                                        <td><img className='dailyimage' src={item.imgUrl}></img></td>
+                                        <td><a target={'_blank'} href='{item.contentUrl}'>{item.title}</a></td>
+                                        <td>{item.title}</td>
+                                        <td></td>
+                                    </tr>
+                                );
+                            })
+                        }
+                    </table>
                 </div>
             </div>
         </div>

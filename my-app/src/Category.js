@@ -13,6 +13,7 @@ function Category() {
             <li><Link to="/kakaomap">카카오맵</Link></li>
             <li><Link to="/regex">정규식</Link></li>
             <li><Link to="/galery">갤러리</Link></li>
+            <li><Link to="/callModalPopup">모달팝업테스트</Link></li>
         </ul>
         </div>);
 }

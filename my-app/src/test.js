@@ -26,3 +26,9 @@ function getGoogleNews(){
 
 
 console.log(getGoogleNews());
+
+
+/* 소수 두번쨰 자리까지만 입력했는지 체크하는 함수  */
+function numberCheckLimitPlace(value, limit) {
+    
+}

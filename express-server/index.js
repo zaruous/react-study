@@ -4,6 +4,10 @@ const app = express();
 const cors = require('cors');
 const axios = require('axios');
 const fs = require('fs');
+const cheerio = require("cheerio")
+const {stringify} = require("nodemon/lib/utils");
+const { DateTime } = require("luxon");
+const acessLog = require("./middleware/accessLogMiddleware")
 
 //환경변수에서 port를 가져온다. 환경변수가 없을시 8190 포트를 지정한다.
 const PORT = process.env.PORT || 8190;
@@ -13,6 +17,7 @@ var safesitelist = [
     'm.stock.naver.com', /*경제 뉴스*/
     'https://api.manana.kr', /*환율*/
     'https://api.signal.bz', /* 네이버 뉴스 */
+    'https://mydailybyte.com', /*데일리 바이트*/
 ]
 var corsOptions = {
     origin: function(origin, callback) {
@@ -23,15 +28,76 @@ var corsOptions = {
 }
 
 app.use(cors(corsOptions));
+/* app.use(express.json()); */
+
+app.use(acessLog({
+    printDateYn : "Y",
+}));
+
+app.use(express.urlencoded({ extended: true }));
+
 
 app.get('/', (req, res) => {
     res.send('Hello, World!');
 });
 
-app.get('/api-service/News/getNews', (req, res) => {
-    axios.get("https://m.stock.naver.com/api/news/list?category=mainnews&page=1&pageSize=30").then((response) => {
-        res.send(response.data);
-    });
+app.get('/api-service/News/:newsType', (req, res) => {
+
+    const newType = req.params.newsType;
+    if("getNews" === newType)
+    {
+        axios.get("https://m.stock.naver.com/api/news/list?category=mainnews&page=1&pageSize=30").then((response) => {
+            res.send(response.data);
+        });
+    }
+    else if("exchange" === newType)
+    {
+        axios.get("https://api.manana.kr/exchange/rate.json").then((response) => {
+            res.send(response.data);
+        });
+    }
+    else if("getNaverNews" === newType)
+    {
+        axios.get("https://api.signal.bz/news/realtime").then((response) => {
+            res.send(response.data);
+        });
+    }
+    else if("dailybytes" === newType)
+    {
+        const dailyByteRootUrl = "https://mydailybyte.com";
+        const getHtml = async ()=>{
+            return await axios.get(dailyByteRootUrl);
+        }
+
+        getHtml().then((response) => {
+            let html = response.data;
+            const $ = cheerio.load(html);
+            const $postCardList = $(".c-post-card__media").children();
+
+            const retList = [];
+            $postCardList.each(function(i , ele ){
+				
+                
+                const imgUrl = $(this).find(".c-post-card__image").attr("data-src");
+                const title = $(this).find(".c-post-card__image").attr("alt");
+                const relativePath = $(this).find(".c-post-card__image-wrap").attr("href");
+                
+				//console.log(ele.attribute("href"));
+				console.log("tagname : " + ele + " title : " +  title + " relativePath : " + relativePath);
+                const contentUrl = dailyByteRootUrl + relativePath;
+                retList.push({
+                    "title": title,
+                    "imgUrl" : imgUrl,
+                    "contentUrl" : contentUrl,
+                });
+            });
+            //console.log(retList);
+
+
+            res.send( JSON.stringify(retList)  );
+        });
+
+    }
 });
 
 app.get('/api-service/News/exchange', (req, res) => {
