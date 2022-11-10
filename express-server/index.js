@@ -8,6 +8,7 @@ const cheerio = require("cheerio")
 const {stringify} = require("nodemon/lib/utils");
 const { DateTime } = require("luxon");
 const acessLog = require("./middleware/accessLogMiddleware")
+const config  = require('./config.json');
 
 //환경변수에서 port를 가져온다. 환경변수가 없을시 8190 포트를 지정한다.
 const PORT = process.env.PORT || 8190;
@@ -137,6 +138,41 @@ app.get('/api-service/bus/getStations', (req, res) => {
 	res.send(result);
 	
 });
+app.get("/time", (req, res) => {
+
+    const s = DateTime.now().toFormat("yyyy-MM-dd HH:mm:ss");
+    res.send(s);
+});
+
+app.get("/api-service/movie/boxoffice", (req, res) =>{
+
+    const token = config.movie.token;
+
+    let date = req.query["date"];
+    if(!date)
+    {
+        /* 현재 일자 -1일 */
+        date = DateTime.now().minus({days: 1}).toFormat("yyyyMMdd");
+
+        /*res.status(400).send("date is required");
+        return;
+        */
+    }
+
+    /* www.kobis.or.kr에서 현재 박스 오피스 정보 출력 */
+    let url = "http://www.kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key="+token+"&targetDt="+date;
+
+    axios({
+        method: 'get',
+        url: url,
+        responseType: 'json',
+    })
+        .then((response) => {
+            res.send(response.data);
+        });
+
+});
+
 
 
 
