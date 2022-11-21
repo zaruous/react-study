@@ -10,8 +10,9 @@ const { DateTime } = require("luxon");
 const acessLog = require("./middleware/accessLogMiddleware")
 const config  = require('./config.json');
 
+
 //환경변수에서 port를 가져온다. 환경변수가 없을시 8190 포트를 지정한다.
-const PORT = process.env.PORT || 8190;
+const PORT = config.server.port || 8190;
 var safesitelist = [
     'https://naver', 
     'https://google.com', 
@@ -41,6 +42,11 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/', (req, res) => {
     res.send('Hello, World!');
 });
+
+app.get("/api-service/login", (req, res) => {
+    res.send("login");
+});
+
 
 app.get('/api-service/News/:newsType', (req, res) => {
 
