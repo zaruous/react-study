@@ -42,4 +42,4 @@ shapes.forEach(shape => {
     console.log(shape.getArea());
 });
 console.log(new Circle(5).radius);
-console.log(new Rectangle(10, 5).width);
+//console.log(new Rectangle(10,5).width); // 에러 발생.

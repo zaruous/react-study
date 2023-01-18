@@ -40,6 +40,15 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.get('/', (req, res) => {
+
+    /*
+    const dbapi = require('./DBAPI');
+    const sql = "select * from company_info where 1=1 and code =?  limit 10 ";
+    dbapi.query(sql, [447690]).then((rows)=>{
+        console.log(rows);
+        res.send(rows);
+    });
+    */
     res.send('Hello, World!');
 });
 
