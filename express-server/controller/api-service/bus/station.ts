@@ -1,8 +1,10 @@
-const fs = require("fs");
+"use strict";
+import { Response, Request, NextFunction } from "express";
+const {fs} = require("fs");
 
 let stationIfo = csvToJSON(fs.readFileSync('전국버스정류장 위치정보.csv', 'utf-8'));
 
-exports.stations = (req, res) => {
+exports.stations = (req : Request, res : Response , next : NextFunction) => {
     const station = req.query['station'];
 
     if(station === "")
@@ -29,10 +31,11 @@ exports.stations = (req, res) => {
 
 
 
-function csvToJSON(csv_string){
+function csvToJSON(csv_string : string){
 
     // 1. 문자열을 줄바꿈으로 구분 => 배열에 저장
-    const rows = csv_string.replaceAll("\"","").split("\r\n");
+
+    const rows = csv_string.replace("\"","").split("\r\n");
 
     // 줄바꿈을 \n으로만 구분해야하는 경우, 아래 코드 사용
     // const rows = csv_string.split("\n");
@@ -50,7 +53,7 @@ function csvToJSON(csv_string){
     for(let i = 1; i < rows.length; i++){
 
         // 빈 객체 생성: 각 내용 행을 객체로 만들어 담아둘 객체임
-        let obj = {};
+        let obj : any = {};
 
         // 각 내용 행을 콤마로 구분
         let row = rows[i].split(",");

@@ -1,11 +1,6 @@
-const http = require('http');
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const axios = require('axios');
-const fs = require('fs');
-const cheerio = require("cheerio")
-const {stringify} = require("nodemon/lib/utils");
 const { DateTime } = require("luxon");
 const acessLog = require("./middleware/accessLogMiddleware")
 const config  = require('./config.json');
@@ -39,8 +34,6 @@ app.use(acessLog({
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-
-
     res.send('Hello, World!');
 });
 

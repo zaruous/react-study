@@ -1,7 +1,10 @@
+"use strict";
+import { Response, Request, NextFunction } from "express";
+import {AxiosResponse} from "axios";
 const config = require("../../../config.json");
 const {DateTime} = require("luxon");
 const axios = require("axios");
-exports.boxoffice = (req, res) =>{
+exports.boxoffice = (req : Request, res : Response) =>{
 
     const token = config.movie.token;
 
@@ -24,7 +27,7 @@ exports.boxoffice = (req, res) =>{
         url: url,
         responseType: 'json',
     })
-        .then((response) => {
+        .then((response : AxiosResponse) => {
             res.send(response.data);
         });
 

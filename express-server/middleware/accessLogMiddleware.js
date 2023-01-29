@@ -1,7 +1,5 @@
-
+const {DateTime} = require("luxon");
 module.exports = function(options){
-    const {DateTime} = require("luxon");
-
     'use strict';
     return function middlewareAccessLogPrinter(req, res, next){
 

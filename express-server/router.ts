@@ -1,3 +1,4 @@
+import { Application } from "express";
 
 const authorize = require("./controller/api-service/oauth/authorize");
 const news = require("./controller/api-service/news/news");
@@ -7,7 +8,7 @@ const boxoffice = require("./controller/api-service/movie/boxoffice");
 const busStation = require("./controller/api-service/bus/station");
 const stock = require("./controller/api-service/stock/stock");
 
-exports.route = function(app){
+exports.route = function(app : Application){
     app.get("/api-service/oauth/authorize", authorize.authorize);
 
     app.get("/api-service/News/:newsType", news.news);

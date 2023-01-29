@@ -14,7 +14,7 @@ function query(sql, params) {
     return new Promise((resolve, reject) => {
         const conn = newConnection();
         conn.query(sql ,params,(err, rows, fields) => {
-            if(err) {  console.log(err); reject(err); return; };
+            if(err) {  console.log(err); reject(err); return; }
             resolve(rows);
         });
         conn.end();
