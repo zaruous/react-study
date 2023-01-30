@@ -2,6 +2,7 @@
 import { Response, Request, NextFunction } from "express";
 import {Element, Document} from "cheerio";
 import {AxiosResponse} from "axios";
+
 const axios = require("axios");
 const cheerio = require("cheerio");
 
@@ -41,10 +42,11 @@ exports.news =  (req : Request, res : Response) => {
             const retList : Array<any> = [];
             $postCardList.each(function(i: number, ele: Element ){
 
-
-
+                // @ts-ignore
                 const imgUrl = $(this).find(".c-post-card__image").attr("data-src");
+                // @ts-ignore
                 const title = $(this).find(".c-post-card__image").attr("alt");
+                // @ts-ignore
                 const relativePath = $(this).find(".c-post-card__image-wrap").attr("href");
 
                 //console.log(ele.attribute("href"));

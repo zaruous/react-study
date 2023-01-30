@@ -1,6 +1,9 @@
+"use strict";
+import { Response, Request, NextFunction } from "express";
+import {AxiosResponse} from "axios";
 const config = require("../../../config.json");
 
-exports.authorize = (req, res) => {
+exports.authorize = (req : Request, res : Response) => {
 
     const client_id = req.query["client_id"];
     const response_type= req.query["response_type"];

@@ -1,6 +1,7 @@
 import { Application } from "express";
 
 const authorize = require("./controller/api-service/oauth/authorize");
+const login = require("./controller/api-service/oauth/login");
 const news = require("./controller/api-service/news/news");
 const exchange = require("./controller/api-service/news/exchange");
 const naverNews = require("./controller/api-service/news/naverNews");
@@ -10,6 +11,7 @@ const stock = require("./controller/api-service/stock/stock");
 
 exports.route = function(app : Application){
     app.get("/api-service/oauth/authorize", authorize.authorize);
+    app.get("/api-service/oauth/login", login.doLogin);
 
     app.get("/api-service/News/:newsType", news.news);
     app.get("/api-service/News/exchange", exchange.exchange);

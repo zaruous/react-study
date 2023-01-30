@@ -1,3 +1,5 @@
+"use strict";
+import { Response, Request } from "express";
 const express = require('express');
 const app = express();
 const cors = require('cors');
@@ -8,7 +10,7 @@ const config  = require('./config.json');
 
 //환경변수에서 port를 가져온다. 환경변수가 없을시 8190 포트를 지정한다.
 const PORT = config.server.port || 8190;
-var safesitelist = [
+const safesitelist = [
     'https://naver', 
     'https://google.com', 
     'm.stock.naver.com', /*경제 뉴스*/
@@ -16,10 +18,10 @@ var safesitelist = [
     'https://api.signal.bz', /* 네이버 뉴스 */
     'https://mydailybyte.com', /*데일리 바이트*/
 ]
-var corsOptions = {
-    origin: function(origin, callback) {
-        var issafesitelisted = safesitelist.indexOf(origin) !== -1;
-        callback(null, issafesitelisted);
+
+const corsOptions = {
+    origin: function(origin : string, callback : any) {
+        callback(null, safesitelist.indexOf(origin) !== -1);
     },
     credentials: true
 }
@@ -27,19 +29,17 @@ var corsOptions = {
 app.use(cors(corsOptions));
 /* app.use(express.json()); */
 
-app.use(acessLog({
-    printDateYn : "Y",
-}));
+app.use(acessLog());
 
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
+app.get('/', (req : Request, res : Response) => {
     res.send('Hello, World!');
 });
 
 require("./router").route(app);
 
-app.get("/time", (req, res) => {
+app.get("/time", (req : Request, res : Response) => {
     const s = DateTime.now().toFormat("yyyy-MM-dd HH:mm:ss");
     res.send(s);
 });
