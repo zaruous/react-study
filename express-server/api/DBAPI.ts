@@ -1,5 +1,5 @@
 "use strict";
-import {Pool, PoolConnection, RowDataPacket, QueryError, FieldPacket, Connection, ConnectionOptions, OkPacket } from "mysql2";
+import {Pool, PoolConnection, QueryError, OkPacket } from "mysql2";
 
 const mysql = require("mysql2")
 const config = require("../config.json")
@@ -15,14 +15,18 @@ const pool: Pool = mysql.createPool({
     connectTimeout : config.db.mysql.timeout,
     connectionLimit: 10
 });
+console.log("create pool.");
 
+const close  = () => {
+    getPool().end();
+}
 
 /**
  * returns pool
  */
 const getConnection = (): Promise<PoolConnection> => {
     return new Promise((resolve, reject) => {
-        pool.getConnection((err, connection) => {
+        getPool().getConnection((err, connection) => {
             if (err) {
                 reject(err);
                 return;
@@ -32,7 +36,7 @@ const getConnection = (): Promise<PoolConnection> => {
     });
 };
 
-const getPool  =  ():Pool=>{
+const getPool  =  (): Pool => {
     return pool;
 }
 
@@ -41,14 +45,16 @@ const getPool  =  ():Pool=>{
  * @param sql
  * @param params
  */
-function query(sql : string, params : any|any[]|{ [param: string]: any }){
+
+
+const query = (sql : string, params : any|any[]|{ [param: string]: any }): Promise<OkPacket> =>{
     return new Promise((resolve, reject) => {
-        getPool().query<OkPacket>(sql ,params , (err, rows ) => {
+        getPool().query<OkPacket>(sql ,params , (err: QueryError|null, rows : OkPacket ) => {
             if(err) {  console.log(err); reject(err); return; }
             resolve(rows);
         });
     });
-}
+};
 
 /**
  *
@@ -83,5 +89,5 @@ const newTransaction = async (cb: (connection: PoolConnection) => Promise<void>)
     }
 };
 
-exports.query = query;
-exports.newTransaction = newTransaction;
+export { query, update, newTransaction , getPool, close};
+

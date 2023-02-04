@@ -1,3 +1,4 @@
+"use strict";
 import * as assert from "assert";
 import { simpleInterest, compoundInterest, MoneyResult } from './Money';
 import {describe, expect, test} from '@jest/globals';
