@@ -16,6 +16,8 @@ describe('money api test', () => {
         expect(real.afterInterest).toBe("253800");
         expect(real.maturityValue).toBe("10253800");
 
+        expect(real.equals(new MoneyResult("300000", "46200", "253800", "10253800" ))).toBe(true);
+
     });
 
     test('returns correct result for given inputs', () => {

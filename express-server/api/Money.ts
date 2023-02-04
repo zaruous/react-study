@@ -1,12 +1,10 @@
-import {expect} from "@jest/globals";
-
 /**
  * Calculates simple interest
  * @param principal Principal amount
  * @param rate Interest rate
  * @param time Time in months
  */
-export function simpleInterest(principal: number, rate: number, time: number): MoneyResult {
+function simpleInterest(principal: number, rate: number, time: number): MoneyResult {
     const interest = principal * rate * time / (12 * 100);
     const tax = interest * 0.154;
     const afterInterest = interest - tax;
@@ -24,7 +22,7 @@ export function simpleInterest(principal: number, rate: number, time: number): M
  @param time Time in months
  @param compoundingFrequency Compounding frequency (default: 12, which means monthly compounding)
  */
-export function compoundInterest(principal: number, rate: number, time: number, compoundingFrequency: number = 12): MoneyResult {
+function compoundInterest(principal: number, rate: number, time: number, compoundingFrequency: number = 12): MoneyResult {
     const interest = (principal * Math.pow(1 + rate / (compoundingFrequency * 100), compoundingFrequency * time / 12) - principal);
     const tax = interest * 0.154;
     const afterInterest = Number(interest - tax);
@@ -34,7 +32,7 @@ export function compoundInterest(principal: number, rate: number, time: number, 
 /**
  *
  */
-export class MoneyResult {
+class MoneyResult {
     interest: string
     tax: string
     afterInterest: string
@@ -46,7 +44,7 @@ export class MoneyResult {
         this.maturityValue = maturityValue;
     }
 
-    equals(other: MoneyResult) : boolean{
+    public equals(other: MoneyResult) : boolean{
         if(other == null) return false;
 
         return this.interest === other.interest &&
@@ -56,3 +54,6 @@ export class MoneyResult {
     }
 
 }
+
+
+export {simpleInterest,compoundInterest, MoneyResult};
