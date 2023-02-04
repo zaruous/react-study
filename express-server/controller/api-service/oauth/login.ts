@@ -1,6 +1,6 @@
 "use strict";
 import { Response, Request, NextFunction } from "express";
-const DBAPI = require("./DBAPI");
+const DBAPI = require("../../../api/DBAPI");
 
 module LoginImpl {
 

@@ -14,6 +14,7 @@ function Category() {
             <li><Link to="/regex">정규식</Link></li>
             <li><Link to="/galery">갤러리</Link></li>
             <li><Link to="/callModalPopup">모달팝업테스트</Link></li>
+            <li><Link to="/calendar">달력</Link></li>
         </ul>
         </div>);
 }

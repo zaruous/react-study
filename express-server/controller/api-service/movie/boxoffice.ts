@@ -1,5 +1,5 @@
 "use strict";
-import { Response, Request, NextFunction } from "express";
+import { Response, Request } from "express";
 import {AxiosResponse} from "axios";
 const config = require("../../../config.json");
 const {DateTime} = require("luxon");

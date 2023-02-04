@@ -13,6 +13,7 @@ import GaleryContainer from "./GaleryContainer";
 import Modal from 'react-modal';
 import {useRef, useState} from "react";
 import CallModalPopup from "./CallModalPopup";
+import Calendar from "./components/cal/Calendar";
 
 
 function App() {
@@ -91,6 +92,7 @@ const contentStyle = {
                 <Route path="/regex" element={ <RegexComponent/> }></Route>
                 <Route path="/galery" element={ <GaleryContainer/> }></Route>
                 <Route path="/callModalPopup" element={ <CallModalPopup showPopup={showPopup}/> }></Route>
+                <Route path="/calendar" element={ <Calendar/> }></Route>
                 <Route path="*" element={ <NotFound/> }></Route>
             </Routes>
 

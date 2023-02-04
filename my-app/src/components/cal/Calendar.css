@@ -1,0 +1,20 @@
+
+.calendar table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.calendar th,
+.calendar td {
+    border: 1px solid gray;
+    padding: 8px;
+    text-align: center;
+}
+
+.calendar .selected {
+    background-color: lightgray;
+}
+
+.th-pointer{
+    cursor:pointer;
+}
