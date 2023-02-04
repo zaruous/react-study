@@ -1,21 +1,39 @@
 "use strict";
-import {RowDataPacket, QueryError, FieldPacket, Connection, ConnectionOptions, OkPacket } from "mysql2";
+import {Pool, PoolConnection, RowDataPacket, QueryError, FieldPacket, Connection, ConnectionOptions, OkPacket } from "mysql2";
 
 const mysql = require("mysql2")
 const config = require("../config.json")
 
 /**
- * returns new connection.
+ * create new connection pool.
  */
-function newConnection() : Connection {
-    const connConfig : ConnectionOptions = {
-        host: config.db.mysql.host,
-        user: config.db.mysql.user,
-        password: config.db.mysql.password,
-        database: config.db.mysql.database,
-        connectTimeout : config.db.mysql.timeout
-    };
-    return mysql.createConnection(connConfig);
+const pool: Pool = mysql.createPool({
+    host: config.db.mysql.host,
+    user: config.db.mysql.user,
+    password: config.db.mysql.password,
+    database: config.db.mysql.database,
+    connectTimeout : config.db.mysql.timeout,
+    connectionLimit: 10
+});
+
+
+/**
+ * returns pool
+ */
+const getConnection = (): Promise<PoolConnection> => {
+    return new Promise((resolve, reject) => {
+        pool.getConnection((err, connection) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(connection);
+        });
+    });
+};
+
+const getPool  =  ():Pool=>{
+    return pool;
 }
 
 /**
@@ -25,15 +43,45 @@ function newConnection() : Connection {
  */
 function query(sql : string, params : any|any[]|{ [param: string]: any }){
     return new Promise((resolve, reject) => {
-        const conn : Connection = newConnection();
-
-        conn.query<OkPacket>(sql ,params , (err, rows ) => {
+        getPool().query<OkPacket>(sql ,params , (err, rows ) => {
             if(err) {  console.log(err); reject(err); return; }
             resolve(rows);
         });
-        conn.end();
     });
 }
 
-exports.query = query;
+/**
+ *
+ * @param sql
+ * @param params
+ */
+function update(sql : string, params : any|any[]|{ [param: string]: any }){
+    return new Promise((resolve, reject) => {
 
+        getPool().query<OkPacket>(sql ,params ,(err, results) => {
+            if(err) {  console.log(err); reject(err); return; }
+            resolve(results);
+            console.log(`result ${results.affectedRows} row(s)`);
+        });
+
+    });
+}
+
+const newTransaction = async (cb: (connection: PoolConnection) => Promise<void>) => {
+
+    try {
+        await getConnection().then( (pool : PoolConnection)=>{
+            pool.beginTransaction(err =>{ throw err; });
+            cb(pool);
+            pool.commit();
+            pool.release();
+        });
+
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
+
+exports.query = query;
+exports.newTransaction = newTransaction;

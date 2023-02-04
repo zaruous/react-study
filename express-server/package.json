@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "start": "npx run dist/index.js",
+    "test": "tsc | jest dist/",
     "build": "tsc",
     "clean": "tsc --build --clean"
   },
@@ -25,6 +26,11 @@
     "typescript": "^4.9.4"
   },
   "devDependencies": {
-    "@types/express": "^4.17.16"
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-typescript": "^7.18.6",
+    "@jest/globals": "^29.4.1",
+    "@types/express": "^4.17.16",
+    "@types/jest": "^29.4.0",
+    "ts-jest": "^29.0.5"
   }
 }
