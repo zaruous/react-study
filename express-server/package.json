@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx run dist/index.js",
+    "start": "tsc | npx run dist/index.js",
     "test": "tsc | jest --detectOpenHandles dist/ ",
     "build": "tsc",
     "clean": "tsc --build --clean"

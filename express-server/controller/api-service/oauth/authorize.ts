@@ -1,25 +1,52 @@
 "use strict";
-import { Response, Request, NextFunction } from "express";
-import {AxiosResponse} from "axios";
+import { Response, Request } from "express";
+import {AxiosResponse, AxiosError} from "axios";
+const axios = require("axios");
 const config = require("../../../config.json");
 
-exports.authorize = (req : Request, res : Response) => {
-
-    const client_id = req.query["client_id"];
-    const response_type= req.query["response_type"];
-    const redirect_uri = req.query["redirect_uri"];
-
-    /*url 매핑*/
-    let url = config.server.url + "/oauth/authorize?";
-    url += "client_id=" + client_id;
-    url += "&response_type=" + response_type;
-    url += "&redirect_uri=" + redirect_uri;
-
-    /*
-    axios.get(kakologinHost ).then((response) => {
-        res.send(response.data);
-    });
-    */
-    console.log(url);
-    res.send(client_id);
+const getApiKey = (req : Request, res : Response) =>{
+    const data = {
+        restApiKey:config.login.kakao.restApiKey,
+        redirectUrl:config.login.kakao.redirectUrl,
+    };
+    console.log(`getApiKey : ${data.redirectUrl}`);
+    res.send(data);
 };
+
+const authorize = (req : Request, res : Response) => {
+
+    const kakaoCode = req.query["code"];
+    if (!kakaoCode)
+    {
+        res.status(500).send("code is empty.");
+        return;
+    }
+
+    const data = `grant_type=authorization_code&client_id=${config.login.kakao.restApiKey}&redirect_uri=${config.login.kakao.redirectUrl}&code=${kakaoCode}`;
+    console.log(`code : ${kakaoCode}\ndata :  ${data}`);
+    axios.post(config.login.kakao.tokenUrl, data ,{
+        headers:{
+            "Content-type":"application/x-www-form-urlencoded",
+            "charset":"utf-8"}
+    })
+    .then((data: AxiosResponse) => {
+        console.log(`access_token : ${data.data}`);
+        const access_token = data.data["access_token"];
+
+        return axios.get(config.login.kakao.userInfoUrl , {
+            headers: {
+                Authorization: `Bearer ${access_token}`,
+            },
+        })
+    })
+    .then((ares: AxiosResponse) => {
+        console.log(ares.data);
+        res.send(JSON.stringify(ares.data));
+    })
+    .catch((err: AxiosError) => {
+        console.log(err.message);
+        res.status(500).send(err.message)
+    });
+};
+
+export {getApiKey,authorize }

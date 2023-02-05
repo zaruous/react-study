@@ -17,6 +17,9 @@ const safesitelist = [
     'https://api.manana.kr', /*환율*/
     'https://api.signal.bz', /* 네이버 뉴스 */
     'https://mydailybyte.com', /*데일리 바이트*/
+    'https://kauth.kakao.com',
+    'https://kapi.kakao.com'
+
 ]
 
 const corsOptions = {

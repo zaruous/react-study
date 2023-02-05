@@ -1,7 +1,11 @@
 import axios from "axios";
 
+import {useState} from "react";
 
 function CallModalPopup({showPopup}){
+
+
+    const [msg,setMsg] = useState("")
 
     const callModalPopupOnClick = () => {
         //alert('callModalPopupOnClick');
@@ -9,9 +13,30 @@ function CallModalPopup({showPopup}){
     };
 
     const callLoginPopupOnClick = () => {
-        /*인가 코드 요청*/
 
-        axios.get('http://localhost:8190/api-service/oauth/authorize?client_id=client&response_type=code&redirect_uri=http://localhost:3000/oauth2/redirect');
+        axios(
+            {
+                method:'GET',
+                url:'/api-service/oauth/getApiKey',
+                headers:{
+                    "Access-Control-Allow-Credentials":true,
+                    "action":"getApiKey",
+                },
+                responseType: 'json'
+            }
+        ).then(res =>{
+            /*인가 코드 요청*/
+            const apiKey = res.data.restApiKey;
+            const redirectUrl = res.data.redirectUrl;
+            const url = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUrl}&response_type=code`;
+
+            //window.open(url, "target", 'top=100, left=300, width=500, height=600, toolbar=no, menubar=no, location=no, status=no, scrollbars=no, resizable=no');
+            window.location.href = url;
+        }).catch(err =>{
+            setMsg(`[getApiKey]${err.message}`);
+        })
+
+
     };
 
     return (
@@ -20,7 +45,7 @@ function CallModalPopup({showPopup}){
             <button onClick={callModalPopupOnClick}>버튼</button>
             <button onClick={callLoginPopupOnClick}
                     style={btnLoginStyle}></button>
-
+            <div>{msg}</div>
         </>
     );
 }

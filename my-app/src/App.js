@@ -14,11 +14,51 @@ import Modal from 'react-modal';
 import {useRef, useState} from "react";
 import CallModalPopup from "./CallModalPopup";
 import Calendar from "./components/cal/Calendar";
-
+import axios from "axios";
 
 function App() {
 
 const [modalVisible, setModalVisible] = useState(false);
+const [status, setStatus] = useState("");
+const [nickname, setNickname] = useState("");
+const params = new URL(document.location).searchParams;
+
+const saveToLocalStorage = (key, data) => {
+    localStorage.setItem(key, data);
+};
+const getLocalStorage = (key) => {
+        return localStorage.getItem(key);
+};
+
+const kakaoCode = params.get('code');
+if(kakaoCode)
+{
+    saveToLocalStorage("info",kakaoCode);
+    axios(
+        {
+            method:'GET',
+            url:'/api-service/oauth/authorize',
+            headers:{
+                "Access-Control-Allow-Credentials":true,
+                "action":"authorize",
+            },
+            params:{
+                "code" : kakaoCode
+            },
+            responseType: 'json'
+        }
+    ).then(res =>
+    {
+        const data = res.data;
+        saveToLocalStorage("nickname",data.properties.nickname);
+        saveToLocalStorage("profileImg",data.properties.profile_image);
+        saveToLocalStorage("data",JSON.stringify(data));
+        window.location.href = "./";
+    })
+    .catch(err =>{
+        setStatus(`${err.message}`);
+    });
+}
 
 const closeModal =  ()=> {
     setModalVisible(false);
@@ -63,6 +103,33 @@ const contentStyle = {
     height: '100%',
 }
 
+const divStatusStyle = {
+    position:'relative',
+    bottom: '5px',
+}
+const headerStyle = {
+    /*수직으로 가운데 정렬 */
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%'
+}
+
+const headerRightStyle = {
+    position:'relative',
+    right: '5px',
+    width: '100%',
+    textAlign:'right',
+
+}
+
+const profileImgStyle = {
+    width: "auto",
+    height: "auto",
+    maxWidth: "50px",
+    maxHeight: "50px",
+
+}
+
   return (
     <div className="App">
         {modalVisible && (
@@ -74,12 +141,17 @@ const contentStyle = {
             </Modal>
         )}
         <BrowserRouter>
-            <header className="App-header">
+            <header className="App-header" style={headerStyle}>
                 <a
                     className="home-link"
                     href="./"
                     target="_self"
                 >Home</a>
+                <span style={headerRightStyle}>
+                    {getLocalStorage("profileImg") && <img style={profileImgStyle} src={getLocalStorage("profileImg")}></img> }
+                    <span>{getLocalStorage("nickname")}</span>
+                </span>
+
             </header>
             <Category></Category>
             <Routes>
@@ -95,8 +167,8 @@ const contentStyle = {
                 <Route path="/calendar" element={ <Calendar/> }></Route>
                 <Route path="*" element={ <NotFound/> }></Route>
             </Routes>
-
         </BrowserRouter>
+        <div style={divStatusStyle}>{status}</div>
     </div>
   );
 }

@@ -1,8 +1,11 @@
-
 {
   "login": {
     "kakao": {
-      "login_host": "https://kauth.kakao.com"
+      "host": "https://kauth.kakao.com",
+      "tokenUrl" : "https://kauth.kakao.com/oauth/token",
+      "userInfoUrl" : "https://kauth.kakao.com/oauth/token",
+      "restApiKey" :"",
+      "redirectUrl" : "http://localhost:3000"
     }
   },
   "server": {
@@ -14,7 +17,7 @@
   },
 
   "movie": {
-    "token" : ""
+    "token" : "fc8149aa2eedc044accd521ee9ebf8af"
   },
   "db": {
     "mysql": {

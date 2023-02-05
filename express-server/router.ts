@@ -1,4 +1,5 @@
 import { Application } from "express";
+import {getApiKey} from "./controller/api-service/oauth/authorize";
 
 const authorize = require("./controller/api-service/oauth/authorize");
 const login = require("./controller/api-service/oauth/login");
@@ -11,6 +12,8 @@ const stock = require("./controller/api-service/stock/stock");
 
 exports.route = function(app : Application){
     app.get("/api-service/oauth/authorize", authorize.authorize);
+    app.get("/api-service/oauth/getApiKey", authorize.getApiKey);
+
     app.get("/api-service/oauth/login", login.doLogin);
 
     app.get("/api-service/News/:newsType", news.news);
