@@ -1,0 +1,29 @@
+
+{
+  "login": {
+    "kakao": {
+      "login_host": "https://kauth.kakao.com"
+    }
+  },
+  "server": {
+    "port": 8190,
+    "accesslog": {
+      "printLogYn": "Y",
+      "printDateYn" : "Y"
+    }
+  },
+
+  "movie": {
+    "token" : ""
+  },
+  "db": {
+    "mysql": {
+        "host": "localhost",
+        "port": 3306,
+        "user": "tester1",
+        "password":"tester1",
+        "database" : "investar",
+        "timeout" : 10000
+    }
+  }
+}
