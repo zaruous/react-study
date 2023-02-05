@@ -5,6 +5,7 @@ const app = express();
 const cors = require('cors');
 const { DateTime } = require("luxon");
 const acessLog = require("./middleware/accessLogMiddleware")
+const authFilter = require("./middleware/AuthFilter")
 const config  = require('./config.json');
 
 
@@ -32,7 +33,14 @@ const corsOptions = {
 app.use(cors(corsOptions));
 /* app.use(express.json()); */
 
+/**
+ * access logging.
+ */
 app.use(acessLog());
+/**
+ * authentication filter.
+ */
+app.use(authFilter());
 
 app.use(express.urlencoded({ extended: true }));
 

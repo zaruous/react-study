@@ -1,10 +1,9 @@
 
 import axios from 'axios';
 import {useCallback, useState} from 'react';
-import { Link } from 'react-router-dom';
-import {IDateJS} from 'datejs';
 import React, { useEffect } from 'react';
 import styles from './News.css';
+import {get} from "./api/Request";
 
 function News(callback, deps){
 
@@ -23,17 +22,25 @@ function News(callback, deps){
     /* 원달러 환율 api */
     function updateExchange() {
         console.log("updateExchange");
-        axios(
-            {
-                method:'GET',
-                url:'/api-service/News/exchange',
-                headers:{
-                    "Access-Control-Allow-Credentials":true,
-                    "action":"exchange",
-                },
-                responseType: 'json'
-            }
-        ).then(res => setExchange(res.data));
+
+
+get("/api-service/News/exchange", {},{
+    "Access-Control-Allow-Credentials":true,
+    "action":"exchange",
+},  res => setExchange(res.data), err=>{
+    console.log(err.message);
+});
+        // axios(
+        //     {
+        //         method:'GET',
+        //         url:'/api-service/News/exchange',
+        //         headers:{
+        //             "Access-Control-Allow-Credentials":true,
+        //             "action":"exchange",
+        //         },
+        //         responseType: 'json'
+        //     }
+        // ).then(res => setExchange(res.data));
     }
 
 

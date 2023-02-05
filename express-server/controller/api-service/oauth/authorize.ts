@@ -18,12 +18,12 @@ const authorize = (req : Request, res : Response) => {
     const kakaoCode = req.query["code"];
     if (!kakaoCode)
     {
-        res.status(500).send("code is empty.");
+        res.status(401).send("code is empty.");
         return;
     }
 
     const data = `grant_type=authorization_code&client_id=${config.login.kakao.restApiKey}&redirect_uri=${config.login.kakao.redirectUrl}&code=${kakaoCode}`;
-    console.log(`code : ${kakaoCode}\ndata :  ${data}`);
+    console.log(`url : ${config.login.kakao.tokenUrl} \ncode : ${kakaoCode}\ndata :  ${data}`);
     axios.post(config.login.kakao.tokenUrl, data ,{
         headers:{
             "Content-type":"application/x-www-form-urlencoded",
@@ -40,12 +40,15 @@ const authorize = (req : Request, res : Response) => {
         })
     })
     .then((ares: AxiosResponse) => {
-        console.log(ares.data);
         res.send(JSON.stringify(ares.data));
     })
     .catch((err: AxiosError) => {
+
         console.log(err.message);
-        res.status(500).send(err.message)
+        res.status(Number(err.code)).send( {
+            msg : err.message,
+            desc : "authorize"
+        })
     });
 };
 

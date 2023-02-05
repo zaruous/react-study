@@ -14,60 +14,54 @@ import Modal from 'react-modal';
 import {useRef, useState} from "react";
 import CallModalPopup from "./CallModalPopup";
 import Calendar from "./components/cal/Calendar";
-import axios from "axios";
+import {get} from "./api/Request";
 
 function App() {
 
-const [modalVisible, setModalVisible] = useState(false);
+const [loginVisible, setLoginVisible] = useState(false);
 const [status, setStatus] = useState("");
-const [nickname, setNickname] = useState("");
 const params = new URL(document.location).searchParams;
+const modalRef = useRef();
 
-const saveToLocalStorage = (key, data) => {
-    localStorage.setItem(key, data);
+const saveStorage = (key, data) => {
+    sessionStorage.setItem(key, data);
 };
-const getLocalStorage = (key) => {
-        return localStorage.getItem(key);
+
+const getStorage = (key) => {
+        return sessionStorage.getItem(key);
 };
 
 const kakaoCode = params.get('code');
 if(kakaoCode)
 {
-    saveToLocalStorage("info",kakaoCode);
-    axios(
-        {
-            method:'GET',
-            url:'/api-service/oauth/authorize',
-            headers:{
-                "Access-Control-Allow-Credentials":true,
-                "action":"authorize",
-            },
-            params:{
-                "code" : kakaoCode
-            },
-            responseType: 'json'
-        }
-    ).then(res =>
+    saveStorage("info",kakaoCode);
+    get("/api-service/oauth/authorize", {
+        "code" : kakaoCode
+    }, {
+        "Access-Control-Allow-Credentials":true
+    }, res =>
     {
+        console.log( res.data);
         const data = res.data;
-        saveToLocalStorage("nickname",data.properties.nickname);
-        saveToLocalStorage("profileImg",data.properties.profile_image);
-        saveToLocalStorage("data",JSON.stringify(data));
+        saveStorage("nickname",data.properties.nickname);
+        saveStorage("profileImg",data.properties.thumbnail_image);
+        saveStorage("data",JSON.stringify(data));
         window.location.href = "./";
-    })
-    .catch(err =>{
+    }, err =>{
+        console.log(err.message);
         setStatus(`${err.message}`);
     });
+
 }
 
 const closeModal =  ()=> {
-    setModalVisible(false);
+    setLoginVisible(false);
 }
 const showPopup = (message)=> {
-    setModalVisible(true);
+    setLoginVisible(true);
 }
 
-const modalRef = useRef();
+
   
 const diaryItem = [
     {
@@ -129,17 +123,46 @@ const profileImgStyle = {
     maxHeight: "50px",
 
 }
+/*카카오 로그인 버튼 스타일 */
+const btnKakaoLoginStyle = {
+    backgroundImage: 'url(./images/kakao_login_medium_narrow.png)',
+    width: '222px',
+    height: '48px',
+    border: 'none',
+    backgroundSize: '100% 100%',
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    cursor: 'pointer',
+    outline: 'none',
+    marginTop: '10px',
+    marginBottom: '10px',
+};
+
+const callLoginPopupOnClick = () => {
+    get("/api-service/oauth/getApiKey", "", {
+        "Access-Control-Allow-Credentials":true,
+        "action":"getApiKey",
+    }, res =>{
+        /*인가 코드 요청*/
+        const apiKey = res.data.restApiKey;
+        const redirectUrl = res.data.redirectUrl;
+        const reloadUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUrl}&response_type=code`;
+        window.location.href = reloadUrl;
+    }, err =>{
+        setStatus(`[getApiKey]${err.message}`);
+    });
+};
 
   return (
     <div className="App">
-        {modalVisible && (
-            <Modal isOpen={modalVisible} onRequestClose={closeModal} style={customModalStyle} ref={modalRef}>
+        {(loginVisible && (
+            <Modal isOpen={loginVisible} onRequestClose={closeModal} style={customModalStyle} ref={modalRef}>
                 <div style={contentStyle}>
-                    <div style={{display:'span'}}>모달창</div>
+                    <button onClick={callLoginPopupOnClick} style={btnKakaoLoginStyle}></button>
                     <button onClick={closeModal} style={{}}>닫기</button>
                 </div>
             </Modal>
-        )}
+        ))}
         <BrowserRouter>
             <header className="App-header" style={headerStyle}>
                 <a
@@ -148,8 +171,8 @@ const profileImgStyle = {
                     target="_self"
                 >Home</a>
                 <span style={headerRightStyle}>
-                    {getLocalStorage("profileImg") && <img style={profileImgStyle} src={getLocalStorage("profileImg")}></img> }
-                    <span>{getLocalStorage("nickname")}</span>
+                    {getStorage("profileImg") && <img style={profileImgStyle} src={getStorage("profileImg")}></img> }
+                    <span>{getStorage("nickname")}</span>
                 </span>
 
             </header>
