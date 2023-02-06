@@ -29,27 +29,46 @@ const authorize = (req : Request, res : Response) => {
             "Content-type":"application/x-www-form-urlencoded",
             "charset":"utf-8"}
     })
-    .then((data: AxiosResponse) => {
-        console.log(`access_token : ${data.data}`);
-        const access_token = data.data["access_token"];
-
-        return axios.get(config.login.kakao.userInfoUrl , {
-            headers: {
-                Authorization: `Bearer ${access_token}`,
-            },
-        })
-    })
     .then((ares: AxiosResponse) => {
         res.send(JSON.stringify(ares.data));
     })
     .catch((err: AxiosError) => {
-
         console.log(err.message);
-        res.status(Number(err.code)).send( {
+        res.status(401).send( {
             msg : err.message,
-            desc : "authorize"
+            desc : "token generated failed."
         })
     });
 };
 
-export {getApiKey,authorize }
+/**
+ *
+ * @param req
+ * @param res
+ */
+const userInfo =  (req : Request, res : Response) => {
+    const access_token = req.query["access_token"];
+    if (!access_token)
+    {
+        res.status(401).send("token is empty.");
+        return;
+    }
+
+    axios.get(config.login.kakao.userInfoUrl,{
+        headers: {
+        Authorization: `Bearer ${access_token}`,
+     },
+    })
+        .then((ares: AxiosResponse) => {
+            res.send(JSON.stringify(ares.data));
+        })
+        .catch((err: AxiosError) => {
+
+            console.log(err.message);
+            res.status(401).send( {
+                msg : err.message,
+                desc : "get user information failed."
+            })
+        });
+};
+export {getApiKey,authorize, userInfo }

@@ -3,7 +3,7 @@
     "kakao": {
       "host": "https://kauth.kakao.com",
       "tokenUrl" : "https://kauth.kakao.com/oauth/token",
-      "userInfoUrl" : "https://kauth.kakao.com/oauth/token",
+      "userInfoUrl" : "https://kapi.kakao.com/v2/user/me",
       "restApiKey" :"",
       "redirectUrl" : "http://localhost:3000"
     }

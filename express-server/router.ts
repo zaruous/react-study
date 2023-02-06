@@ -12,6 +12,7 @@ const stock = require("./controller/api-service/stock/stock");
 
 exports.route = function(app : Application){
     app.get("/api-service/oauth/authorize", authorize.authorize);
+    app.get("/api-service/oauth/userInfo", authorize.userInfo);
     app.get("/api-service/oauth/getApiKey", authorize.getApiKey);
 
     app.get("/api-service/oauth/login", login.doLogin);

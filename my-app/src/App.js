@@ -15,6 +15,7 @@ import {useRef, useState} from "react";
 import CallModalPopup from "./CallModalPopup";
 import Calendar from "./components/cal/Calendar";
 import {get} from "./api/Request";
+import { useCookies } from 'react-cookie';
 
 function App() {
 
@@ -22,13 +23,14 @@ const [loginVisible, setLoginVisible] = useState(false);
 const [status, setStatus] = useState("");
 const params = new URL(document.location).searchParams;
 const modalRef = useRef();
+const [cookies, setCookie] = useCookies(["access_token", "reflesh_token"]);
 
 const saveStorage = (key, data) => {
-    sessionStorage.setItem(key, data);
+    localStorage.setItem(key, data);
 };
 
 const getStorage = (key) => {
-        return sessionStorage.getItem(key);
+        return localStorage.getItem(key);
 };
 
 const kakaoCode = params.get('code');
@@ -41,19 +43,43 @@ if(kakaoCode)
         "Access-Control-Allow-Credentials":true
     }, res =>
     {
-        console.log( res.data);
+        console.log(res.data);
+        const token = res.data["access_token"];
+        const ref_token = res.data["refresh_token"];
+        const expires_in = res.data["expires_in"];
+
+        let expires = new Date()
+        expires.setTime(expires.getTime() + (expires_in * 1000))
+        setCookie('access_token', token, { path: '/',  expires})
+        setCookie('refresh_token', ref_token, {path: '/', expires})
+
+        getUserProfile();
+    },err =>{
+        console.log(err.message);
+        setStatus(`${err.message}`);
+    })
+
+}
+
+const getUserProfile = ()=>{
+    const access_token = cookies.access_token;
+    console.log("getUserProfile");
+    get("/api-service/oauth/userInfo", {
+        "access_token" : access_token
+    }, {
+        "Access-Control-Allow-Credentials":true
+    }, res =>
+    {
         const data = res.data;
         saveStorage("nickname",data.properties.nickname);
         saveStorage("profileImg",data.properties.thumbnail_image);
         saveStorage("data",JSON.stringify(data));
         window.location.href = "./";
-    }, err =>{
+    },err =>{
         console.log(err.message);
         setStatus(`${err.message}`);
-    });
-
-}
-
+    })
+};
 const closeModal =  ()=> {
     setLoginVisible(false);
 }
