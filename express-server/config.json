@@ -17,7 +17,7 @@
   },
 
   "movie": {
-    "token" : "fc8149aa2eedc044accd521ee9ebf8af"
+    "token" : ""
   },
   "db": {
     "mysql": {
