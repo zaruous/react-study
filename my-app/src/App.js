@@ -11,11 +11,15 @@ import KakaoMap from "./KakaoMap";
 import RegexComponent from './RegexComponent'
 import GaleryContainer from "./GaleryContainer";
 import Modal from 'react-modal';
-import {useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import CallModalPopup from "./CallModalPopup";
 import Calendar from "./components/cal/Calendar";
 import {get} from "./api/Request";
 import { useCookies } from 'react-cookie';
+import {saveStorage, getStorage } from "./api/Storage";
+import UseRefStudy from "./UseRefStudy";
+
+const {Kakao} = window;
 
 function App() {
 
@@ -23,73 +27,65 @@ const [loginVisible, setLoginVisible] = useState(false);
 const [status, setStatus] = useState("");
 const params = new URL(document.location).searchParams;
 const modalRef = useRef();
-const [cookies, setCookie] = useCookies(["access_token", "reflesh_token"]);
+//const [cookies, setCookie] = useCookies(["access_token", "reflesh_token"]);
+const [token, setToken] = useState("");
+const [profileImg, setProfileImg] = useState("");
+const [nickname, setNickname] = useState("");
 
-const saveStorage = (key, data) => {
-    localStorage.setItem(key, data);
-};
 
-const getStorage = (key) => {
-        return localStorage.getItem(key);
-};
+const getUserProfile = useCallback((token)=>{
 
-const kakaoCode = params.get('code');
-if(kakaoCode)
-{
-    saveStorage("info",kakaoCode);
-    get("/api-service/oauth/authorize", {
-        "code" : kakaoCode
-    }, {
-        "Access-Control-Allow-Credentials":true
-    }, res =>
-    {
-        console.log(res.data);
-        const token = res.data["access_token"];
-        const ref_token = res.data["refresh_token"];
-        const expires_in = res.data["expires_in"];
-
-        let expires = new Date()
-        expires.setTime(expires.getTime() + (expires_in * 1000))
-        setCookie('access_token', token, { path: '/',  expires})
-        setCookie('refresh_token', ref_token, {path: '/', expires})
-
-        getUserProfile();
-    },err =>{
-        console.log(err.message);
-        setStatus(`${err.message}`);
-    })
-
-}
-
-const getUserProfile = ()=>{
-    const access_token = cookies.access_token;
-    console.log("getUserProfile");
     get("/api-service/oauth/userInfo", {
-        "access_token" : access_token
+        "access_token" : token
     }, {
         "Access-Control-Allow-Credentials":true
     }, res =>
     {
         const data = res.data;
-        saveStorage("nickname",data.properties.nickname);
-        saveStorage("profileImg",data.properties.thumbnail_image);
+        //saveStorage("nickname",data.properties.nickname);
+        //saveStorage("profileImg",data.properties.thumbnail_image);
         saveStorage("data",JSON.stringify(data));
-        window.location.href = "./";
+        setProfileImg(data.properties.thumbnail_image);
+        setNickname(data.properties.nickname);
+
     },err =>{
         console.log(err.message);
         setStatus(`${err.message}`);
-    })
-};
-const closeModal =  ()=> {
+    });
+}, [token]);
+
+
+const closeModal = useCallback(()=> {
     setLoginVisible(false);
-}
-const showPopup = (message)=> {
+});
+const showPopup  =  useCallback((message)=> {
     setLoginVisible(true);
+});
+
+if(getStorage("access_token"))
+{
+    getUserProfile(getStorage("access_token"));
 }
 
+const callLoginPopupOnClick = () => {
+    get("/api-service/oauth/getApiKey", "", {
+        "Access-Control-Allow-Credentials":true,
+        "action":"getApiKey",
+    }, res =>{
+        /*인가 코드 요청*/
+        const apiKey = res.data.restApiKey;
+        const redirectUrl = res.data.redirectUrl;
+        const reloadUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUrl}&response_type=code`;
+        window.location.href = reloadUrl;
+    }, err =>{
+        setStatus(`[getApiKey]${err.message}`);
+    });
+};
 
-  
-const diaryItem = [
+
+
+
+    const diaryItem = [
     {
         title:'hello',
         content : 'hello'
@@ -164,20 +160,8 @@ const btnKakaoLoginStyle = {
     marginBottom: '10px',
 };
 
-const callLoginPopupOnClick = () => {
-    get("/api-service/oauth/getApiKey", "", {
-        "Access-Control-Allow-Credentials":true,
-        "action":"getApiKey",
-    }, res =>{
-        /*인가 코드 요청*/
-        const apiKey = res.data.restApiKey;
-        const redirectUrl = res.data.redirectUrl;
-        const reloadUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${redirectUrl}&response_type=code`;
-        window.location.href = reloadUrl;
-    }, err =>{
-        setStatus(`[getApiKey]${err.message}`);
-    });
-};
+
+
 
   return (
     <div className="App">
@@ -197,8 +181,8 @@ const callLoginPopupOnClick = () => {
                     target="_self"
                 >Home</a>
                 <span style={headerRightStyle}>
-                    {getStorage("profileImg") && <img style={profileImgStyle} src={getStorage("profileImg")}></img> }
-                    <span>{getStorage("nickname")}</span>
+                    {{profileImg} && <img style={profileImgStyle} src={profileImg}></img> }
+                    <span>{nickname}</span>
                 </span>
 
             </header>
@@ -214,6 +198,8 @@ const callLoginPopupOnClick = () => {
                 <Route path="/galery" element={ <GaleryContainer/> }></Route>
                 <Route path="/callModalPopup" element={ <CallModalPopup showPopup={showPopup}/> }></Route>
                 <Route path="/calendar" element={ <Calendar/> }></Route>
+                <Route path="/useRefStudy" element={ <UseRefStudy/> }></Route>
+
                 <Route path="*" element={ <NotFound/> }></Route>
             </Routes>
         </BrowserRouter>

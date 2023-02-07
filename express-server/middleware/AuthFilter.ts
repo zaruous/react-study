@@ -2,14 +2,18 @@
 import { Response, Request, NextFunction } from "express";
 module.exports = function(){
     return (req : Request, res : Response, next : NextFunction) =>{
-        console.log(`AuthFilter : ${req.url}`);
+        let msg = `AuthFilter : [${req.url}]\t`;
         if(req.url.startsWith("/api-service/oauth/getApiKey"))
         {
+            msg += "ignore";
+            console.log(msg);
             next();
             return;
         }
         else if(req.url.startsWith("/api-service/oauth/authorize"))
         {
+            msg += "ignore";
+            console.log(msg);
             next();
             return;
         }
