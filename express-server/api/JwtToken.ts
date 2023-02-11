@@ -13,7 +13,7 @@ interface IToken {
      * generate token.
      * @param payload
      */
-    generateToken(payload : {}):string;
+    generateToken(payload : {}|[]):string;
 
     /**
      * vertify token
@@ -40,7 +40,7 @@ class DefaultToken implements IToken {
      *
      * @param payload
      */
-    public generateToken(payload : {}): string{
+    public generateToken(payload : {}|[]): string{
         const token = jwt.sign(payload, this.secret);
         return token;
     };
@@ -52,10 +52,12 @@ class DefaultToken implements IToken {
     public verifyToken(token : string ) : any{
         return jwt.verify(token, this.secret);
     }
-
-
 }
 
+class ToeknObject{
+    email : string | undefined;
+
+}
 /**
  * default token class.
  */
@@ -78,7 +80,7 @@ class Token {
      *
      * @param payload
      */
-    public generateToken  = (payload : {}) : string =>{
+    public generateToken  = (payload : {}|[]) : string =>{
         return this.tokenImpl.generateToken(payload);
     }
 

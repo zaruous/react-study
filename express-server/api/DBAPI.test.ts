@@ -2,7 +2,7 @@
 import * as DBAPI from "./DBAPI"
 import {describe, expect, test} from '@jest/globals';
 import {OkPacket} from "mysql2";
-
+import {generateTimestamp} from "./IdgenUtil";
 
 describe("DBAPI Test", ()=>{
 
@@ -17,6 +17,20 @@ describe("DBAPI Test", ()=>{
         await DBAPI.query("select 1 as a ", [1]).then( (rows : OkPacket)  =>{
             console.log(rows);
         });
+
+        const testid = generateTimestamp() + "@naver.com";
+        const testname = generateTimestamp() + "@naver.com";
+        await DBAPI.update(
+            " insert into users(useremail, userid)  values (? , ? )", [ testid , testname] )
+            .then(( row : OkPacket) =>{
+               console.log(row);
+            });
+
+        await DBAPI.update(
+            " delete from users where 1=1 and useremail = ? ", [ testid] )
+            .then(( row : OkPacket) =>{
+                console.log(row);
+            });
 
         console.log("testest.");
     });

@@ -1,5 +1,5 @@
 "use strict";
-import {Pool, PoolConnection, QueryError, OkPacket } from "mysql2";
+import {Pool, PoolConnection, QueryError, OkPacket, Query } from "mysql2";
 
 const mysql = require("mysql2")
 const config = require("../config.json")
@@ -56,23 +56,19 @@ const query = (sql : string, params : any|any[]|{ [param: string]: any }): Promi
     });
 };
 
+const update = (sql : string, params : any|any[]|{ [param: string]: any }): Promise<OkPacket> =>{
+    return new Promise((resolve, reject) => {
+        getPool().query<OkPacket>(sql ,params , (err: QueryError|null, rows : OkPacket ) => {
+            if(err) {  console.log(err); reject(err); return; }
+            resolve(rows);
+        });
+    });
+};
+
 /**
  *
- * @param sql
- * @param params
+ * @param cb
  */
-function update(sql : string, params : any|any[]|{ [param: string]: any }){
-    return new Promise((resolve, reject) => {
-
-        getPool().query<OkPacket>(sql ,params ,(err, results) => {
-            if(err) {  console.log(err); reject(err); return; }
-            resolve(results);
-            console.log(`result ${results.affectedRows} row(s)`);
-        });
-
-    });
-}
-
 const newTransaction = async (cb: (connection: PoolConnection) => Promise<void>) => {
 
     try {
