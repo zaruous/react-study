@@ -8,7 +8,7 @@ describe("DBAPI Test", ()=>{
 
     test("Select Test",async ()=>{
 
-        let sql = "select * from company_info limit 10 ";
+        let sql = "select * from company_info limit 2 ";
         await DBAPI.query(sql, [447690]).then((rows) => {
             console.log(rows);
         });
