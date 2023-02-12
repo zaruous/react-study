@@ -41,8 +41,7 @@ class DefaultToken implements IToken {
      * @param payload
      */
     public generateToken(payload : {}|[]): string{
-        const token = jwt.sign(payload, this.secret);
-        return token;
+        return jwt.sign(payload, this.secret);
     };
 
     /**
@@ -52,11 +51,6 @@ class DefaultToken implements IToken {
     public verifyToken(token : string ) : any{
         return jwt.verify(token, this.secret);
     }
-}
-
-class ToeknObject{
-    email : string | undefined;
-
 }
 /**
  * default token class.

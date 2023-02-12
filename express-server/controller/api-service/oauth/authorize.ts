@@ -59,7 +59,6 @@ const userInfo =  (req : Request, res : Response) => {
     axios.get(config.login.kakao.userInfoUrl,{
         headers: {
         Authorization: `Bearer ${access_token}`,
-
      },
     })
         .then( async  (ares: AxiosResponse) => {

@@ -3,9 +3,8 @@ const Hello  = (props)=>{
     return(
         
         <div>
-            /* props.children은 태그안의 요소를 가리킴 */
+            <div>리액트를 학습하기 위한 페이지.</div>
             <div>안녕하세요 {props.children} 님.</div>
-            /* 객체를 넘길떈 ... */
             <div>{props.name} {props.age}</div>
         </div>
     );

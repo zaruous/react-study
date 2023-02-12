@@ -1,5 +1,7 @@
 "use strict";
 import { Response, Request, NextFunction } from "express";
+//const session = require("express-session");
+
 module.exports = function(){
     return (req : Request, res : Response, next : NextFunction) =>{
         let msg = `AuthFilter : [${req.url}]\t`;
