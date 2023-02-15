@@ -24,12 +24,14 @@ describe("DBAPI Test", ()=>{
             " insert into users(useremail, userid)  values (? , ? )", [ testid , testname] )
             .then(( row : OkPacket) =>{
                console.log(row);
+               expect(row.affectedRows).toBe(1);
             });
 
         await DBAPI.update(
             " delete from users where 1=1 and useremail = ? ", [ testid] )
             .then(( row : OkPacket) =>{
                 console.log(row);
+                expect(row.affectedRows).toBe(1);
             });
 
         console.log("testest.");

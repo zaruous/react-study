@@ -1,18 +1,48 @@
 import axios from "axios";
 
-import {useState} from "react";
+import {useCallback, useState} from "react";
+import {get} from "./api/Request";
+import {saveStorage} from "./api/Storage";
 const Login = require("./api/Login");
 
-function CallModalPopup({showPopup}){
+function CallModalPopup({prop}){
+    /**
+     *  화면에 사용자 정보를 보여주기 위한 처리. 데이터를 읽어오고 받아온 데이터를 세팅.
+     * @type {(function(*): void)|*}
+     */
+    const getUserProfile = (token, prop)=>{
+        if(!token) return;
+
+        get("/api-service/oauth/userInfo", {
+            "access_token" : token
+        }, {
+            "Access-Control-Allow-Credentials":true
+        }, res =>
+        {
+            const data = res.data;
+            console.log(data);
+            saveStorage("data",JSON.stringify(data));
+
+            if(prop.setProfileImg)
+                prop.setProfileImg(data.properties.thumbnail_image);
+            if(prop.setNickname)
+                prop.setNickname(data.properties.nickname);
+            //saveStorage("access_token", "");
+        },err =>{
+            console.log(err.message);
+            //setStatus(`${err.message}`);
+
+        });
+    };
 
     const callModalPopupOnClick = () => {
-        //alert('callModalPopupOnClick');
-        showPopup();
+        prop.showPopup();
     };
 
     const callLoginPopupOnClick = () => {
-        Login.kakaoLogin(()=>{
-            window.location.href="./";
+        Login.kakaoLogin((accessToken)=>{
+            getUserProfile(accessToken, prop);
+            // window.location.href="./";
         });
     };
 

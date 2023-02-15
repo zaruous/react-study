@@ -25,47 +25,8 @@ function App()
     const [status, setStatus] = useState("");
     const params = new URL(document.location).searchParams;
     const modalRef = useRef();
-    //const [cookies, setCookie] = useCookies(["access_token", "reflesh_token"]);
     const [profileImg, setProfileImg] = useState("");
     const [nickname, setNickname] = useState("");
-
-
-
-    /**
-     * 화면 로드시 storage에 token 있는 경우 이름 및 이미지를 화면에 보여준다.
-     */
-    useLayoutEffect(()=>{
-        console.log("update page.");
-        const accessToken = getStorage("access_token");
-        if(accessToken)
-        {
-            getUserProfile(accessToken);
-        }
-    }, []);
-
-    /**
-     *  화면에 사용자 정보를 보여주기 위한 처리. 데이터를 읽어오고 받아온 데이터를 세팅.
-     * @type {(function(*): void)|*}
-     */
-    const getUserProfile = useCallback((token)=>{
-       if(!token) return;
-        get("/api-service/oauth/userInfo", {
-            "access_token" : token
-        }, {
-            "Access-Control-Allow-Credentials":true
-        }, res =>
-        {
-            const data = res.data;
-            console.log(data);
-            saveStorage("data",JSON.stringify(data));
-            setProfileImg(data.properties.thumbnail_image);
-            setNickname(data.properties.nickname);
-            //saveStorage("access_token", "");
-        },err =>{
-            console.log(err.message);
-            setStatus(`${err.message}`);
-        });
-    }, []);
 
     /**
      *
@@ -214,7 +175,11 @@ function App()
                     <Route path="/kakaomap" element={ <KakaoMap/> }></Route>
                     <Route path="/regex" element={ <RegexComponent/> }></Route>
                     <Route path="/galery" element={ <GaleryContainer/> }></Route>
-                    <Route path="/callModalPopup" element={ <CallModalPopup showPopup={showPopup}/> }></Route>
+                    <Route path="/callModalPopup" element={ <CallModalPopup prop={{
+                        showPopup: showPopup,
+                        setProfileImg: setProfileImg,
+                        setNickname: setNickname
+                    }}/> }></Route>
                     <Route path="/calendar" element={ <Calendar/> }></Route>
                     <Route path="/useRefStudy" element={ <UseRefStudy/> }></Route>
 
