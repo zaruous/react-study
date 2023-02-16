@@ -14,6 +14,7 @@ import Modal from 'react-modal';
 import {useCallback, useLayoutEffect, useRef, useState} from "react";
 import CallModalPopup from "./CallModalPopup";
 import Calendar from "./components/cal/Calendar";
+import Carousel from "./components/layout/Carousel";
 import {get} from "./api/Request";
 import {saveStorage, getStorage } from "./api/Storage";
 import UseRefStudy from "./UseRefStudy";
@@ -139,7 +140,12 @@ function App()
         marginBottom: '10px',
     };
 
-
+    const imageDataList = [
+        'https://w.namu.la/s/4401a0d0660d063605410913f09c621f4240f29faa4415b811bfe03c6069c6b0a9b848ffcab76979a97a07ddfbb0adbe9e721a76a04281bc6c877db3ceb39ee48d57380b3dccfdb6967d69369cea849ff428e6f50faa57a0a64789735f8d9ae4330b5ed81b7b4d62c26b6d94186f8cdb',
+        'https://w.namu.la/s/9ef05343751119e13ec31faa64f43289f9fc8130b7183613c5583b64df5a8c5628992e81a17ea8d8e1ffbf727b6ea2aad3dfaf203de32606a04c997f1c7ae67153d0222496400af3ebe7e2e765dca8eecec74a1008663bde119365c6530ceef4',
+        'https://w.namu.la/s/0d9ec42cc9c1007454e7c91cebf3d5126b3b5486efa6085223c744dfc053cef11a715a85ccfc19e8c008f9d2949b5304fc90704d8d94e319beb39471561ec89fd3418d71aed6d905e6f183cb125d4b05a8cd4cfeaa3897015bcf1be4f8f1649b',
+        'https://w.namu.la/s/523d1e8fb31d061bf287309e9e04d4a78b4a585ed20c09b8da8624337f3bc59733e20ccb3bde25a0d219878f9a30f1625b85baf6ef64c2b79d2ded34f718a0f678ee35cc90fa3b0f4f68aab261b4fccee465ea49a26a4d29d37836c25dc7c20ad3c4b373b3212c31494e339df6ab2efc'
+    ];
 
 
       return (
@@ -182,6 +188,7 @@ function App()
                     }}/> }></Route>
                     <Route path="/calendar" element={ <Calendar/> }></Route>
                     <Route path="/useRefStudy" element={ <UseRefStudy/> }></Route>
+                    <Route path="/images" element={ <Carousel images={imageDataList}/> }></Route>
 
                     <Route path="*" element={ <NotFound/> }></Route>
                 </Routes>

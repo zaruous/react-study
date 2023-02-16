@@ -1,0 +1,63 @@
+.carousel {
+    width: 100%;
+    overflow: hidden;
+}
+
+.carousel-slide {
+    display: flex;
+    width: calc(100% * 1);
+    transition: all 1.5s;
+}
+
+.carousel-preview {
+    display: flex;
+    width: calc(30% * 1);
+}
+
+.carousel-slide-item {
+    width: 100%;
+    /*
+    flex-shrink CSS property는 flex-item 요소의 flex-shrink 값을 설정하는 속성입니다.
+    만약 flex-item 요소의 크기가 flex-container 요소의 크기보다 클 때 flex-shrink 속성을 사용하는데,
+    설정된 숫자값에 따라 flex-container 요소 내부에서 flex-item 요소의 크기가 축소됩니다.
+    */
+    flex-shrink: 0;
+}
+.carousel-prev-slide-item {
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.carousel-slide-item img {
+    width: fit-content;
+    max-height: 25vw;
+    /* height: fit-content; */
+    /*
+        https://developer.mozilla.org/ko/docs/Web/CSS/object-fit
+        CSS object-fit 속성은 <img>나 <video> 요소와 같은 대체 요소의 콘텐츠 크기를
+        어떤 방식으로 조절해 요소에 맞출 것인지 지정합니다.
+
+        fill, contain, cover, none, scale-down
+    */
+    object-fit: scale-down;
+}
+.carousel-prev-slide-item img {
+    width: 10vw;
+    max-height: 15vw;
+}
+
+.carousel-controls {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.carousel-controls button {
+    margin: 0 10px;
+    padding: 5px 10px;
+    border: none;
+    background-color: white;
+    color: black;
+    font-size: 20px;
+    cursor: pointer;
+}
