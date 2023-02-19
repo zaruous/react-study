@@ -16,6 +16,7 @@ function Category() {
             <li><Link to="/callModalPopup">모달팝업테스트</Link></li>
             <li><Link to="/calendar">달력</Link></li>
             <li><Link to="/useRefStudy">UseRef Study 샘플</Link></li>
+            <li><Link to="/chart">Chart</Link></li>
             <li><Link to="/images">Images</Link></li>
         </ul>
         </div>);

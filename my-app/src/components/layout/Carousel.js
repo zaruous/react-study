@@ -1,7 +1,25 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './Carousel.css';
+import Request from "../../api/Request"
 
-const Carousel = ({ images }) => {
+const Carousel = () => {
+
+    const [images, setImages] =  useState([]);
+
+    useEffect(()=>{
+
+        Request.get("/api-service/images/IU", {}, {},
+            (res) =>{
+                const ret = res.data;
+                console.log(ret.imageDataList);
+                setImages(ret.imageDataList);
+            },
+         (err) =>{
+            console.log(err);
+        });
+    }, images);
+
+
     const [currentIndex, setCurrentIndex] = useState(0);
     const handlePrevClick = () => {
         if (currentIndex === 0) {

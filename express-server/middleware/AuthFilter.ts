@@ -4,7 +4,7 @@ import { Response, Request, NextFunction } from "express";
 
 module.exports = function(){
     return (req : Request, res : Response, next : NextFunction) =>{
-        let msg = `AuthFilter : [${new Date()}][${req.url}]\t`;
+        let msg = `AuthFilter : [${new Date()}][${req.url}][req.ip]\t`;
 
         if(req.url.startsWith("/api-service/oauth/getApiKey"))
         {

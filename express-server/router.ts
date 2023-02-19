@@ -9,6 +9,8 @@ const naverNews = require("./controller/api-service/news/naverNews");
 const boxoffice = require("./controller/api-service/movie/boxoffice");
 const busStation = require("./controller/api-service/bus/station");
 const stock = require("./controller/api-service/stock/stock");
+const images_iu = require("./controller/api-service/images/IU");
+
 
 exports.route = function(app : Application){
     app.get("/api-service/oauth/authorize", authorize.authorize);
@@ -26,4 +28,6 @@ exports.route = function(app : Application){
     app.get("/api-service/bus/getStations", busStation.stations);
 
     app.get("/api-service/stock/companyinfo", stock.companyInfo);
+
+    app.get("/api-service/images/:type", images_iu.ListIUImages);
 }

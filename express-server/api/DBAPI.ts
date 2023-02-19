@@ -1,5 +1,6 @@
 "use strict";
 import {Pool, PoolConnection, QueryError, OkPacket, Query } from "mysql2";
+import {FieldPacket, ResultSetHeader, RowDataPacket} from "mysql2/typings/mysql/lib/protocol/packets";
 
 const mysql = require("mysql2")
 const config = require("../config.json")
@@ -65,25 +66,39 @@ const update = (sql : string, params : any|any[]|{ [param: string]: any }): Prom
     });
 };
 
+
+
+
+/**
+ *
+ */
+type DbApiPoolCallback = (pollConnection : PoolConnection) => void;
+
 /**
  *
  * @param cb
  */
-const newTransaction = async (cb: (connection: PoolConnection) => Promise<void>) => {
-
-    try {
-        await getConnection().then( (pool : PoolConnection)=>{
-            pool.beginTransaction(err =>{ throw err; });
-            cb(pool);
-            pool.commit();
-            pool.release();
+const newTransaction = (callback: DbApiPoolCallback) => {
+    return getConnection().then((pool: PoolConnection) => {
+        pool.beginTransaction(async (err) => {
+            if (err) {
+                throw err;
+            } else {
+                try {
+                    await callback(pool);
+                    pool.commit();
+                    pool.release();
+                } catch (error) {
+                    pool.rollback((err) => {
+                        console.error(err);
+                    });
+                    console.log("database  roolback.");
+                    throw error;
+                }
+            }
         });
-
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
+    });
 };
 
-export { query, update, newTransaction , getPool, close};
+export { query, update, newTransaction , getPool, close , DbApiPoolCallback};
 
