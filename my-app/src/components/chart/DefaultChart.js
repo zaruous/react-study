@@ -11,6 +11,7 @@ import {
 import { Bar } from 'react-chartjs-2';
 // @ts-ignore
 import faker from 'faker';
+import {Button} from "@mui/material";
 
 ChartJS.register(
     CategoryScale,
@@ -99,7 +100,7 @@ function DefaultChart() {
         <div>
             <h1>charjs hello.</h1>
             <Bar options={options} data={dataset} />
-            <button onClick={btnClick}>change data</button>
+            <Button variant="contained" onClick={btnClick}>change data</Button>
         </div>);
 }
 

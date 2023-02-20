@@ -1,4 +1,6 @@
 import { useRef, useState } from "react";
+import {Button, TextField} from "@mui/material";
+import ButtonAppBar from "./components/Appbar/ButtonAppBar"
 
 export default function UseRefStudy() {
     /*샘플1*/
@@ -18,21 +20,21 @@ export default function UseRefStudy() {
 
     return (
         <div>
+            <ButtonAppBar></ButtonAppBar>
             <h2>샘플1</h2>
-            <button
+
+            <Button
+                variant={"outlined"}
                 onClick={() => {
                     setStateCount((prev) => prev + 1);
                 }}
-            >
-                State 버튼
-            </button>
-            <button
+            >State 버튼</Button>
+            <Button
+                variant={"outlined"}
                 onClick={() => {
                     refCount.current += 1;
                 }}
-            >
-                Ref 버튼
-            </button>
+            >Ref 버튼</Button>
             <br />
             <br />
             <div>useState Count: {stateCount}</div>
@@ -40,11 +42,14 @@ export default function UseRefStudy() {
             <hr/>
             <h2>샘플2</h2>
             <div>
-                <input type="text" />
-                <input type="button" value="ref X" onClick={ClickBtn} />
+                <TextField id="filled-basic" label="Filled" variant="filled"  size="small" ref={textInput}/>
+                <Button variant={"outlined"}  onClick={ClickBtn}>ref X</Button>
+
                 <br />
-                <input type="text" ref={textInput} />
-                <input type="button" value="ref O" onClick={handleClickBtn} />
+                <br />
+                <TextField id="filled-basic" label="Filled" variant="filled"  size="small" ref={textInput}/>
+                <Button variant={"outlined"}  onClick={handleClickBtn}>ref O</Button>
+
             </div>
 
         </div>
