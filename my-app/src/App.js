@@ -30,6 +30,7 @@ function App()
     const [profileImg, setProfileImg] = useState("");
     const [nickname, setNickname] = useState("");
 
+
     /**
      *
      * @type {(function(): void)|*}
@@ -108,7 +109,8 @@ function App()
         /*수직으로 가운데 정렬 */
         display: 'flex',
         flexDirection: 'row',
-        width: '100%'
+        width: '100%',
+        margin:'0px'
     }
 
     const headerRightStyle = {
@@ -124,7 +126,6 @@ function App()
         height: "auto",
         maxWidth: "50px",
         maxHeight: "50px",
-
     }
     /*카카오 로그인 버튼 스타일 */
     const btnKakaoLoginStyle = {
@@ -145,7 +146,7 @@ function App()
 
 
       return (
-        <div className="App">
+        <div className="App" style={{height:"100vh"}}>
             {(loginVisible && (
                 <Modal isOpen={loginVisible} onRequestClose={closeModal} style={customModalStyle} ref={modalRef}>
                     <div style={contentStyle}>
@@ -186,15 +187,17 @@ function App()
                     <Route path="/useRefStudy" element={ <UseRefStudy/> }></Route>
                     <Route path="/images" element={ <Carousel/> }></Route>
                     <Route path="/chart" element={ <DefaultChart/> }></Route>
-
-
                     <Route path="*" element={ <NotFound/> }></Route>
                 </Routes>
+
             </BrowserRouter>
             <div style={divStatusStyle}>{status}</div>
         </div>
       );
 }
 
+const RouteRapper =  ()=>{
+    return (<div style={{height:"90vh" , backgroundColor:"red"}}></div>);
+}
 export default App;
 
