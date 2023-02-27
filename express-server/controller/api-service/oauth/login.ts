@@ -1,6 +1,7 @@
 "use strict";
 import { Response, Request, NextFunction } from "express";
 import {OkPacket, Query} from "mysql2/index";
+import session, {Session} from "express-session";
 const DBAPI = require("../../../api/DBAPI");
 
 module LoginImpl {
@@ -59,12 +60,20 @@ module LoginImpl {
 }
 
 function doLogin(request : Request, response : Response){
-    const email : string = request.params["email"];
-    const userPwd : string = request.params["userPwd"];
+    const email : string = request.query["email"];
+    const userPwd : string = request.query["userPwd"];
 
+
+    // @ts-ignore
+    request.session.user = email;
+    response.send(email + "\tlogin success");
+
+
+    /*
     LoginImpl.doLogin( email, info =>{
 
     });
+     */
 }
 
 export default LoginImpl;
