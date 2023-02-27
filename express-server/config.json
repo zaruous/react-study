@@ -10,23 +10,33 @@
   },
   "server": {
     "port": 8190,
+    "sessionKey":"mySecretKey",
     "accesslog": {
       "printLogYn": "Y",
       "printDateYn" : "Y"
     }
   },
-
+  "proxy": {
+    "host": "localhost",
+    "port": 8888,
+    "auth" : {
+      "username": "",
+      "password": ""
+    },
+    "protocol" : "",
+    "useYn" : "Y"
+  },
   "movie": {
     "token" : ""
   },
   "db": {
     "mysql": {
-        "host": "localhost",
-        "port": 3306,
-        "user": "tester1",
-        "password":"tester1",
-        "database" : "investar",
-        "timeout" : 10000
+      "host": "localhost",
+      "port": 3306,
+      "user": "tester1",
+      "password":"tester1",
+      "database" : "investar",
+      "timeout" : 10000
     }
   }
 }
