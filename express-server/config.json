@@ -24,7 +24,7 @@
       "password": ""
     },
     "protocol" : "",
-    "useYn" : "Y"
+    "useYn" : "N"
   },
   "movie": {
     "token" : ""
