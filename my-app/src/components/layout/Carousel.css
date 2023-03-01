@@ -42,8 +42,8 @@
     object-fit: scale-down;
 }
 .carousel-prev-slide-item img {
-    width: 10vw;
-    max-height: 15vw;
+    width: 5vw;
+    max-height: 10vw;
 }
 
 .carousel-controls {

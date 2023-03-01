@@ -1,36 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import './Carousel.css';
-import Request from "../../api/Request"
-
-const Carousel = () => {
-
-    const [images, setImages] =  useState([]);
-
-    useEffect(()=>{
-
-        Request.get("/api-service/images/IU", {}, {},
-            (res) =>{
-                const ret = res.data;
-                console.log(ret.imageDataList);
-                setImages(ret.imageDataList);
-            },
-         (err) =>{
-            console.log(err);
-        });
-    }, images);
 
 
+const Carousel = (props) => {
     const [currentIndex, setCurrentIndex] = useState(0);
+
+
     const handlePrevClick = () => {
         if (currentIndex === 0) {
-            setCurrentIndex(images.length - 1);
+            setCurrentIndex(props.images.length - 1);
         } else {
             setCurrentIndex(currentIndex - 1);
         }
     };
 
     const handleNextClick = () => {
-        if (currentIndex === images.length - 1) {
+        if (currentIndex === props.images.length - 1) {
             setCurrentIndex(0);
         } else {
             setCurrentIndex(currentIndex + 1);
@@ -39,9 +24,8 @@ const Carousel = () => {
 
     return (
         <div className="carousel">
-            <h1>Carousel layout</h1>
             <div className="carousel-slide" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
-                {images.map((image, index) => (
+                {props.images.map((image, index) => (
                     <div key={index} className="carousel-slide-item">
                         <img src={image} alt="a" />
                     </div>
@@ -55,8 +39,8 @@ const Carousel = () => {
                 <button onClick={handleNextClick}>Next</button>
             </div>
             <div className="carousel-preview" style={{ transform: `translateX(-${(currentIndex) * 100}%)` }}>
-                {images.map((image, index) => (
-                    <div className="carousel-prev-slide-item" style={{ borderStyle:'solid'}}>
+                {props.images.map((image, index) => (
+                    <div className="carousel-prev-slide-item">
                         <img key={index} src={image} alt="a" />
                     </div>
                 ))}

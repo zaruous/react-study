@@ -1,6 +1,7 @@
 "use strict";
 import { Response, Request } from "express";
 import {SessionOptions} from "express-session";
+import UserInfo from "./controller/api-service/oauth/UserInfo";
 const express = require('express');
 const app = express();
 const cors = require('cors');
@@ -24,6 +25,12 @@ const safesitelist = [
     'https://kapi.kakao.com'
 
 ]
+
+declare module 'express-session' {
+    interface SessionData {
+        user?: UserInfo;
+    }
+}
 
 // 세션 DB 설정
 const mysqlSessionStore = new MysqlSessionStore({

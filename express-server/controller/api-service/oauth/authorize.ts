@@ -1,9 +1,11 @@
 "use strict";
-import { Response, Request } from "express";
-import {AxiosResponse, AxiosError} from "axios";
+import {Request, Response} from "express";
+import {AxiosError, AxiosResponse} from "axios";
+import JwtTokenUtil from "../../../api/JwtToken";
+import UserInfo, {LoginType} from "./UserInfo";
+
 const axios = require("axios");
 const config = require("../../../config.json");
-import JwtTokenUtil from "../../../api/JwtToken";
 
 
 const getApiKey = (req : Request, res : Response) =>{
@@ -65,12 +67,12 @@ const userInfo =  (req : Request, res : Response) => {
             /*사용자 정보 검증 */
 
             ares.data.properties.id;
-            ares.data.properties.nickname;
+            const nickName = ares.data.properties.nickname;
             ares.data.properties.thumbnail_image;
 
             ares.data.kakao_account.profile.has_email;
             ares.data.kakao_account.profile.email_needs_agreement;
-            ares.data.kakao_account.profile.email;
+            const email = ares.data.kakao_account.profile.email;
 
             /*토큰 생성*/
             const util = new JwtTokenUtil();
@@ -79,6 +81,10 @@ const userInfo =  (req : Request, res : Response) => {
                 username: "",
                 helper: ares.data
             });
+
+            const userInfo = new UserInfo(email, nickName);
+            userInfo.loginType = LoginType.KAKAO;
+            req.session.user = userInfo;
 
             console.log(JSON.stringify(ares.data));
 

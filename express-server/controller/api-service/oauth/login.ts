@@ -2,18 +2,11 @@
 import { Response, Request, NextFunction } from "express";
 import {OkPacket, Query} from "mysql2/index";
 import session, {Session} from "express-session";
+import UserInfo from "./UserInfo";
 const DBAPI = require("../../../api/DBAPI");
 
 module LoginImpl {
 
-    export class UserInfo{
-        UserEmail : string;
-        UserName : string;
-        constructor(UserEmail : string, UserName : string){
-            this.UserEmail = UserEmail;
-            this.UserName = UserName;
-        }
-    }
     interface onExists { (userInfo: UserInfo): void }
     interface onNotExists { (): void }
 
@@ -60,8 +53,8 @@ module LoginImpl {
 }
 
 function doLogin(request : Request, response : Response){
-    const email : string = request.query["email"];
-    const userPwd : string = request.query["userPwd"];
+    const email  = request.query["email"];
+    const userPwd  = request.query["userPwd"];
 
 
     // @ts-ignore

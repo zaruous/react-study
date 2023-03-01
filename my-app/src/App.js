@@ -19,6 +19,7 @@ import {get} from "./api/Request";
 import {saveStorage, getStorage } from "./api/Storage";
 import UseRefStudy from "./UseRefStudy";
 import DefaultChart from "./components/chart/DefaultChart";
+import ImageCarouselView from "./components/img/ImageCarouselView";
 
 function App()
 {
@@ -98,7 +99,7 @@ function App()
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100%',
+
     }
 
     const divStatusStyle = {
@@ -146,7 +147,7 @@ function App()
 
 
       return (
-        <div className="App" style={{height:"100vh"}}>
+        <div className="App">
             {(loginVisible && (
                 <Modal isOpen={loginVisible} onRequestClose={closeModal} style={customModalStyle} ref={modalRef}>
                     <div style={contentStyle}>
@@ -185,7 +186,7 @@ function App()
                     }}/> }></Route>
                     <Route path="/calendar" element={ <Calendar/> }></Route>
                     <Route path="/useRefStudy" element={ <UseRefStudy/> }></Route>
-                    <Route path="/images" element={ <Carousel/> }></Route>
+                    <Route path="/images" element={ <ImageCarouselView/> }></Route>
                     <Route path="/chart" element={ <DefaultChart/> }></Route>
                     <Route path="*" element={ <NotFound/> }></Route>
                 </Routes>
@@ -196,8 +197,5 @@ function App()
       );
 }
 
-const RouteRapper =  ()=>{
-    return (<div style={{height:"90vh" , backgroundColor:"red"}}></div>);
-}
 export default App;
 

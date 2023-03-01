@@ -1,0 +1,26 @@
+{
+  "server": {
+    "port": 8191,
+    "imageDir" : "C:\\Users\\KYJ\\git\\React\\react-study\\upload-server\\uploads"
+  },
+  "proxy": {
+    "host": "localhost",
+    "port": 8888,
+    "auth" : {
+      "username": "",
+      "password": ""
+    },
+    "protocol" : "",
+    "useYn" : "Y"
+  },
+  "db": {
+    "mysql": {
+      "host": "localhost",
+      "port": 3306,
+      "user": "tester1",
+      "password":"tester1",
+      "database" : "investar",
+      "timeout" : 10000
+    }
+  }
+}

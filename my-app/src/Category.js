@@ -17,7 +17,7 @@ function Category() {
             <li><Link to="/calendar">달력</Link></li>
             <li><Link to="/useRefStudy">UseRef Study 샘플</Link></li>
             <li><Link to="/chart">Chart</Link></li>
-            <li><Link to="/images">Images</Link></li>
+            <li><Link to="/images">앨범</Link></li>
         </ul>
         </div>);
 }

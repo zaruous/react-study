@@ -58,7 +58,9 @@ const afterAction = (oaxios, callback, errorCallback) =>{
     if(errorCallback)
     {
         oaxios.catch(err=>{
+            alert(err);
             console.log(err.status);
+            window.location.href="./";
             errorCallback(err);
         })
     }

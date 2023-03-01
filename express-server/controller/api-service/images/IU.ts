@@ -1,19 +1,25 @@
 import {Request, Response} from "express";
+import RequestUtil from "../../../api/RequestUtil";
 
 
 const ListIUImages =  (req : Request, res : Response) => {
     const type  = req.params.type;
+
+
+    const ru = new RequestUtil({
+        url: "http://localhost:8191/list"
+        ,method:"get"
+    });
+    ru.request().then(res =>{
+        res.data
+    })
+
     const imageDataList = [
-        'https://w.namu.la/s/d6bda7b7d3df7e569818a6702d298a10fca00bd80ac86d0a40e61d385714d565d1e1d3a0c0ce1fe5ae62773adc1289fe9bdeb2ceb60320809f9bc542cfe2c209aa202aadd72ca5c0cd75a4528a681083686554e8e477bcdc78c8f813a41215fb',
-        'https://w.namu.la/s/4401a0d0660d063605410913f09c621f4240f29faa4415b811bfe03c6069c6b0a9b848ffcab76979a97a07ddfbb0adbe9e721a76a04281bc6c877db3ceb39ee4632cd6e434ed883b7ba396b9b84e72cd7f342c9fcb0d30bfc9540a3b977ed572c5e31cca707bdc782bbc7ed72ec2acd7',
-        'https://w.namu.la/s/9ef05343751119e13ec31faa64f43289f9fc8130b7183613c5583b64df5a8c5628992e81a17ea8d8e1ffbf727b6ea2aad3dfaf203de32606a04c997f1c7ae671494a09e092d08332f5e83859a91b245811ca321068c09abd3ba6e5d1ec6da789',
-        'https://w.namu.la/s/527b1a23b72525b89e627cc13b7ae1244646e64675d739f2fe8cee33c0edb0c3ecc2b85679323acf666c395b157e9362fffad2b7c625afbf2a2a08b831bf44ec8c6fcae0ce8a761601d136313504d7594f01f6ea5bc2a5761b9ffef05fd3d3544b9b2e6c8353bd7d91c6f81c10c0b1c2',
-        'https://w.namu.la/s/d89c6743f172af9b8c5212766306701f820e4a0ce0fb8434976c6ad073ed2ce063b9dba851b87fa3979312c71f227c97a2984374129dd53b559fa68c0ff9790c83360a08da399358d2cf541a21493d1c1b4a7f2ca20ac8efd70292d7a4d8bd17ea7a39112d795c5b2bdf7829cce5abd3',
-        'https://w.namu.la/s/8dd7a379981524b5deeea015236561b950146667a228b89bbcb1da1028b80b1d72fce4595caad8a4215d2752fb2fe5ef8dc66aecd9b2386e81707c91bf940a80fd9c88bb01d51546b6105b44afab04dcf9df40758c9a6cd8939edcf340659f1027c1fcf1cdaa386ea88edd3be93ddcb7',
-        'https://w.namu.la/s/45aa889292a2e516f5b00987f180fbe5fa7615c0ff57a4f486d3ab7124d8dcd2c1cf9106d6abd1c90ebe2b430c5a891cb21c2c9833e270b5842ecfc401434a263234ea6396ced63c28033eb5d7e2da038f85d4dda4496e0be099dc72fc1bba9210c93e35993a1c69f9d68c5e7e3f5251',
-        'https://w.namu.la/s/35d25c55317e8d29d11fa9fa1a41348ee63d3a010f356d360a9dcdc95513885e4c3143831db6c08d2e387e6db67702b7a8631594931a4200d1d5eb23b2d2153dc8f1f6cdd08d23a9c6b69738d7f7e32f4dc1c0e4934158d551bfecb20a4830a21763ec0107389e9f669c01c96b77cefe',
-        'https://w.namu.la/s/435956cb028808dfb02861f48564d2f29fbd34b79b0549ebe8ea391d03ea039824ccd45e639390391dc487b5ace8c542f2115590fbca9238870a13e3fb4c4a5cb8aac9a132cf44de571152f1bf0252623cf850e3ed2a0c52808eb344c0c8f5dad3c91837e21bb58da4ee9fa70dbb48dc',
-        'https://w.namu.la/s/6667513bd2a37ec4e9c0db0c3de2cafa4a31e5abb59a3086551de07a2583ae07f4f0b663958b9d7e0b77a5c34fca2c6811d038cd99a25c7263419cb253797b31276026602a7e1b9a90e6cdbce3a7f4aaa4b17ec69d40954aae2a62aa5d1a62b4c54181d3465d787263fe4d06a8b5bea0',
+        'https://w7.pngwing.com/pngs/14/531/png-transparent-iu-monday-afternoon-actor-singer-kpop-celebrities-black-hair-photography-thumbnail.png',
+        ,'https://w7.pngwing.com/pngs/666/908/png-transparent-iu-k-pop-singer-south-korea-asxfgf-shoe-palette-top-thumbnail.png'
+        ,'https://w7.pngwing.com/pngs/742/29/png-transparent-iu-south-korea-k-pop-lee-ji-eun-black-hair-girl-fashion-model-thumbnail.png'
+        ,'https://w7.pngwing.com/pngs/27/983/png-transparent-iu-south-korea-singer-shirt-k-pop-lee-ji-eun-white-girl-top-thumbnail.png'
+        ,'https://mblogthumb-phinf.pstatic.net/MjAxNzAzMDhfMTIz/MDAxNDg4OTYwOTk0MDcy.OJThDpQBK0FSAn-NLsgFbYk65ZFD4SlHZw6n1mjSPB4g.Su0IzirSVkBQcC4wcpFGaRilK8us8uK4-tZDHY1IFM4g.JPEG.goyoungsuk/%EC%95%84%EC%9D%B4%EC%9C%A010.jpg?type=w2'
     ];
 
     console.log(imageDataList);

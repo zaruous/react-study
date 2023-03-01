@@ -2,7 +2,6 @@
 
 import LoginImpl from "./login";
 import Login from "./login";
-import UserInfo = LoginImpl.UserInfo;
 import {userInfo} from "./authorize";
 import {OkPacket} from "mysql2/index";
 import {close} from "../../../api/DBAPI";
