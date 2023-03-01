@@ -4,10 +4,10 @@ import path from "path";
 const config = require("./config.json");
 const fs = require('fs');
 const app = express();
-import { v4 as uuidv4 } from 'uuid';
-import { Response, Request, NextFunction } from "express";
+import { Response, Request } from "express";
 import {Model} from "sequelize";
-const { Sequelize, DataTypes, Dialect } = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
+import {fileDownloadAuthMiddleware} from './FileDownloadAuthMiddleware';
 
 interface File {
     filename: string;
@@ -17,10 +17,10 @@ interface File {
 }
 
 class Image extends Model {
-    public id!: number;
+
     public filename!: string;
     public originalname! : string;
-    public guid!: string;
+
 }
 
 const sequelize = new Sequelize(config.db.mysql.database, config.db.mysql.user, config.db.mysql.password, {
@@ -80,7 +80,17 @@ const upload = multer(
 
 app.get("/img/list", (req: Request, res : Response) =>{
 
-    Image.findAll({ limit: 100, order: [
+    const fetchCount = req.params["fetchCount"];
+    let intCount : number = 100;
+    if(fetchCount)
+    {
+        intCount = Number.parseInt( fetchCount, 10);
+    }
+
+    if(intCount > 100)
+        intCount = 100;
+
+    Image.findAll({ limit: intCount, order: [
         ['updatedAt', 'DESC']
         ] })
         .then(images => {
@@ -121,12 +131,23 @@ app.post('/img/upload', upload.array('files'), (req : Request, res: Response) =>
 });
 
 // 파일 다운로드를 처리하는 라우터 생성
-app.get('/img/download/:filename', function(req, res) {
+app.get('/img/download/:filename', fileDownloadAuthMiddleware , function(req : Request, res: Response) {
     const filename = decodeURIComponent(req.params.filename);
+
+    // 파일명 유효성 검사
+    const regex = /^[a-zA-Z0-9_-]+.[a-zA-Z]{3}$/; // 파일명이 알파벳, 숫자, 하이픈, 언더스코어로만 이루어진 파일명일 경우
+    if (!regex.test(filename)) {
+        res.status(400).send('파일명이 올바르지 않습니다.');
+        return;
+    }
 
     const filepath = path.join(config.server.imageDir, filename);
     console.log(filepath);
     if (fs.existsSync(filepath)) {
+        res.set([
+            {'Cache-Control': 'public, max-age=86400'},
+            {'Expires': new Date(Date.now() + 86400 * 1000).toUTCString()}
+        ]);
         res.download(filepath, filename);
     } else {
         res.status(404).send('파일이 존재하지 않습니다.');
