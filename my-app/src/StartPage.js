@@ -1,9 +1,9 @@
 import CChildren from './CChildren';
 
-const StartPage = () => {
+const StartPage = ({prop}) => {
     return (
         <div>
-            <CChildren></CChildren>
+            <CChildren {...prop}></CChildren>
         </div>
     );
 };

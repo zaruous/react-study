@@ -171,14 +171,20 @@ function App()
                 </header>
                 <Category></Category>
                 <Routes>
-                    <Route path="/" element={<StartPage/>} ></Route>
+                    <Route path="/" element={<StartPage prop={{
+                        showPopup: showPopup,
+                        setProfileImg: setProfileImg,
+                        setNickname: setNickname
+                    }}/>} ></Route>
                     <Route path="/diary-write" element={ <DiaryWrite diaryItem={diaryItem}/> }></Route>
                     <Route path="/diary-list" element={ <DiaryList diaryItem={diaryItem}/> }></Route>
+                    <Route path="/regex" element={ <RegexComponent/> }></Route>
+                    <Route path="/galery" element={ <GaleryContainer/> }></Route>
                     <Route path="/news" element={ <News/> }></Route>
                     <Route path="/userList" element={ <UserList/> }></Route>
                     <Route path="/kakaomap" element={ <KakaoMap/> }></Route>
-                    <Route path="/regex" element={ <RegexComponent/> }></Route>
-                    <Route path="/galery" element={ <GaleryContainer/> }></Route>
+
+
                     <Route path="/callModalPopup" element={ <CallModalPopup prop={{
                         showPopup: showPopup,
                         setProfileImg: setProfileImg,

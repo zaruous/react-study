@@ -3,7 +3,7 @@ import axios from "axios";
 import {useCallback, useState} from "react";
 import {get} from "./api/Request";
 import {saveStorage} from "./api/Storage";
-const Login = require("./api/Login");
+const Login = require("./api/LoginHelper");
 
 function CallModalPopup({prop}){
     /**

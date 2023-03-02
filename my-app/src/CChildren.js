@@ -1,35 +1,28 @@
 
-//const img = require("../public/images/KakaoTalk_20230215_121440816.jpg");
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React from "react";
+import Login from "./Login";
+import Typography from "@mui/material/Typography";
+import {Container} from "@mui/material";
 
-const Hello  = (props)=>{
 
+const theme = createTheme();
+const CChildren  = ({props})=>{
     const imgSrc = {
-        width:"40%",
-        height:"40%"
+        width:"35%"
     }
     return(
-        
-        <div>
-            <div>리액트를 학습하기 위한 페이지.</div>
-            <div>안녕하세요 {props.children} 님.</div>
-            <div>{props.name} {props.age}</div>
-            <img src="./images/KakaoTalk_20230215_121440816.jpg" alt="img1" style={imgSrc}  />
-        </div>
+        <ThemeProvider  theme={theme}>
+            <Container  maxWidth="xl">
+            <Typography variant="h3" mb={1}>
+                어서 오시게
+            </Typography>
+                <img src="./images/KakaoTalk_20230215_121440816.jpg" alt="img1" style={imgSrc}  />
+            <Login {...props}></Login>
+            </Container>
+        </ThemeProvider>
     );
 
-}
-
-const profile = {
-    name:'kim'
-    ,age:13
-}
-function CChildren(){
-    return(<div>
-        <Hello {...profile}>
-            x
-        </Hello>
-    </div>);
 }
 export default CChildren;
 
