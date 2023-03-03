@@ -18,6 +18,7 @@ jobs:
       matrix:
         node-version: [16.x, 18.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        
 
     steps:
     - uses: actions/checkout@v3
@@ -26,7 +27,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run : cd express-server
+      working-directory: ./express-server
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
