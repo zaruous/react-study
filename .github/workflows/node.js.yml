@@ -21,8 +21,9 @@ jobs:
         
 
     steps:
-    - run : cd ./express-server
+    
     - uses: actions/checkout@v3
+    - run : cd ./express-server
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
