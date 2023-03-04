@@ -135,7 +135,7 @@ app.get('/img/download/:filename', fileDownloadAuthMiddleware , function(req : R
     const filename = decodeURIComponent(req.params.filename);
 
     // 파일명 유효성 검사
-    const regex = /^[a-zA-Z0-9_-]+.[a-zA-Z]{3-4}$/; // 파일명이 알파벳, 숫자, 하이픈, 언더스코어로만 이루어진 파일명일 경우
+    const regex = /^[a-zA-Z0-9_-]+.[a-zA-Z]{3,4}$/; // 파일명이 알파벳, 숫자, 하이픈, 언더스코어로만 이루어진 파일명일 경우
     if (!regex.test(filename)) {
         res.status(400).send('파일명이 올바르지 않습니다.');
         return;
