@@ -69,7 +69,7 @@ const Login = ({prop}) =>{
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
-        RequestPost("/api-service/oauth/login"``, {
+        RequestPost("/api-service/oauth/login", {
              email: data.get('txtEmail')
             ,userPwd : data.get('txtPassword')
         } , {} , (res)=>{
