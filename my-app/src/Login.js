@@ -46,7 +46,7 @@ const Login = ({prop}) =>{
             changedUserInfo.email = data.kakao_account.email;
             changedUserInfo.profileImage = data.properties.thumbnail_image;
             changedUserInfo.nickName = data.properties.nickname;
-            setUserInfo(changedUserInfo);
+            //setUserInfo(changedUserInfo);
             saveStorage(CONST_KEY_USER_INFO, JSON.stringify(changedUserInfo));
             /*
             if(prop)
