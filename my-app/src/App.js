@@ -161,7 +161,7 @@ function App()
     return (
 
         <div className="App">
-            <UserInfoContext.Provider value={{userInfo}}>
+            <UserInfoContext.Provider value={{userInfo, setUserInfo}}>
             {(loginVisible && (
                 <Modal isOpen={loginVisible} onRequestClose={closeModal} style={customModalStyle} ref={modalRef}>
                     <div style={contentStyle}>

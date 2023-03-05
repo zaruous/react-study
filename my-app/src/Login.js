@@ -46,8 +46,9 @@ const Login = ({prop}) =>{
             changedUserInfo.email = data.kakao_account.email;
             changedUserInfo.profileImage = data.properties.thumbnail_image;
             changedUserInfo.nickName = data.properties.nickname;
-            //setUserInfo(changedUserInfo);
+
             saveStorage(CONST_KEY_USER_INFO, JSON.stringify(changedUserInfo));
+            setUserInfo(changedUserInfo);
             /*
             if(prop)
             {
@@ -146,11 +147,11 @@ const Login = ({prop}) =>{
                 </Grid>
             </Grid>
 
-            <button
-                    onClick={callLoginPopupOnClick}
-                    type={"submit"}
-                    style={btnLoginStyle}></button>
+
             </Box>
+                <button
+                    onClick={callLoginPopupOnClick}
+                    style={btnLoginStyle}></button>
             </Box>
         </Container>
     </ThemeProvider>
