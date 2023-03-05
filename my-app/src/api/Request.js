@@ -32,6 +32,7 @@ exports.get = (reqUrl, params= {}, headers = {}, callback , errorCallback)=>{
  * @param errorCallback
  */
 exports.post = (reqUrl, params = {}, headers={}, callback, errorCallback)=>{
+
     const req = axios(
         {
             method:'POST',
@@ -60,7 +61,7 @@ const afterAction = (oaxios, callback, errorCallback) =>{
         oaxios.catch(err=>{
             alert(err);
             console.log(err.status);
-            window.location.href="./";
+            window.location.href="/";
             errorCallback(err);
         })
     }

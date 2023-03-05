@@ -20,25 +20,26 @@ module LoginImpl {
      * @constructor
      * @private
      */
-    export function doLogin(UserEmail: string,  onExists: onExists, notExists?: onNotExists) : void {
+    export function doLogin(userEmail: string,  onExists: onExists, notExists?: onNotExists) : void {
         const sql : string = "select userEmail, userName from users where 1=1 and UserEmail =? limit 1 ";
-        const param : string[] = [UserEmail];
+        const param : string[] = [userEmail];
 
-        return DBAPI.query(sql, param, (err : Error, rows : Array<any>, fields: Array<any> ) => {
-            if(err) throw err;
-            if(onExists)
+        DBAPI.query(sql, param).then((rows : OkPacket[]) =>{
+            if(rows.length == 0)
             {
-                if(rows.length > 0)
-                {
-                    onExists(new UserInfo( rows[0].UserEmail, rows[0].UserName));
-                }
-                else{
-                    if(notExists)
-                        notExists();
-                }
+                if(notExists)
+                    notExists();
+                return;
+            }
+            else{
+                // @ts-ignore
+                onExists( new UserInfo(rows[0].userEmail, rows[0].userName));
+                return;
             }
         });
     }
+
+
 
     /**
      *
@@ -52,21 +53,27 @@ module LoginImpl {
 
 }
 
+/**
+ *
+ * @param request
+ * @param response
+ */
 function doLogin(request : Request, response : Response){
-    const email  = request.query["email"];
+    const email : string  = request.query["email"] ? request.query["email"] as string : "";
     const userPwd  = request.query["userPwd"];
+    LoginImpl.doLogin(email,  (userInfo : UserInfo)=>{
+        request.session.user = userInfo;
 
+        response.send(
+            { message :  email + "\tlogin success" }
+        );
 
-    // @ts-ignore
-    request.session.user = email;
-    response.send(email + "\tlogin success");
-
-
-    /*
-    LoginImpl.doLogin( email, info =>{
-
+    }, ()=>{
+        response.status(401).send(
+            { message :  email + "\tlogin fail" }
+        );
     });
-     */
+
 }
 
 export default LoginImpl;

@@ -3,7 +3,7 @@
  * @param key
  * @param data
  */
-exports.saveStorage = (key, data) => {
+const saveStorage = (key, data) => {
     localStorage.setItem(key, data);
 };
 
@@ -12,6 +12,10 @@ exports.saveStorage = (key, data) => {
  * @param key
  * @returns {string}
  */
-exports.getStorage = (key) => {
+const getStorage = (key) => {
     return localStorage.getItem(key);
 };
+
+const CONST_KEY_USER_INFO = "userInfo";
+
+export { getStorage, saveStorage, CONST_KEY_USER_INFO} ;

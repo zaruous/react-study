@@ -1,6 +1,6 @@
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import React from "react";
+import React, {useContext} from "react";
 import {
     Box,
     Button,
@@ -12,13 +12,16 @@ import {
     Link,
     TextField
 } from "@mui/material";
-import {get} from "./api/Request";
-import {saveStorage} from "./api/Storage";
+import {get as RequestGet , post as RequestPost} from "./api/Request";
+import {saveStorage, CONST_KEY_USER_INFO} from "./api/Storage";
+import {UserInfo, UserInfoContext} from "./context/UserInfoContext";
 const LoginHelper = require("./api/LoginHelper");
+
 
 const theme = createTheme();
 
 const Login = ({prop}) =>{
+    const {userInfo, setUserInfo}= useContext(UserInfoContext);
 
     /**
      *  화면에 사용자 정보를 보여주기 위한 처리. 데이터를 읽어오고 받아온 데이터를 세팅.
@@ -27,7 +30,7 @@ const Login = ({prop}) =>{
     const getUserProfile = (token, prop)=>{
         if(!token) return;
 
-        get("/api-service/oauth/userInfo", {
+        RequestGet("/api-service/oauth/userInfo", {
             "access_token" : token
         }, {
             "Access-Control-Allow-Credentials":true
@@ -37,24 +40,43 @@ const Login = ({prop}) =>{
             console.log(data);
             saveStorage("data",JSON.stringify(data));
 
-            if(prop.setProfileImg)
-                prop.setProfileImg(data.properties.thumbnail_image);
-            if(prop.setNickname)
-                prop.setNickname(data.properties.nickname);
-            //saveStorage("access_token", "");
+
+
+            const changedUserInfo = {};
+            changedUserInfo.email = data.kakao_account.email;
+            changedUserInfo.profileImage = data.properties.thumbnail_image;
+            changedUserInfo.nickName = data.properties.nickname;
+            setUserInfo(changedUserInfo);
+            saveStorage(CONST_KEY_USER_INFO, JSON.stringify(changedUserInfo));
+            /*
+            if(prop)
+            {
+                if(prop.setProfileImg)
+                    prop.setProfileImg(data.properties.thumbnail_image);
+                if(prop.setNickname)
+                    prop.setNickname(data.properties.nickname);
+            }
+            else{
+                alert("prop is undefined.");
+            }
+            */
         },err =>{
             console.log(err.message);
-            //setStatus(`${err.message}`);
-
         });
     };
 
     const handleSubmit = (event)=>{
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
+
+        RequestPost("/api-service/oauth/login"``, {
+             email: data.get('txtEmail')
+            ,userPwd : data.get('txtPassword')
+        } , {} , (res)=>{
+            console.log(res.data);
+            alert("ok");
+        }, (err)=>{
+            alert(err);
         });
     };
 
@@ -82,6 +104,7 @@ const Login = ({prop}) =>{
             margin="normal"
             required
             id="txtEmail"
+            name="txtEmail"
             label="Email Address"
             autoComplete="email"
             autoFocus
@@ -93,8 +116,8 @@ const Login = ({prop}) =>{
                 required
                 fullWidth
                 id="txtPassword"
+                name="txtPassword"
                 label="Password"
-
             ></TextField>
             <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
@@ -105,6 +128,7 @@ const Login = ({prop}) =>{
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                type="submit"
             >로그인
             </Button>
             <Grid container
@@ -116,13 +140,15 @@ const Login = ({prop}) =>{
                     </Link>
                 </Grid>
                 <Grid item >
-                    <Link href="#" variant="body2">
+                    <Link href="/user/SignUp" variant="body2">
                         {"회원가입"}
                     </Link>
                 </Grid>
             </Grid>
 
-            <button onClick={callLoginPopupOnClick}
+            <button
+                    onClick={callLoginPopupOnClick}
+                    type={"submit"}
                     style={btnLoginStyle}></button>
             </Box>
             </Box>

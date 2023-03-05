@@ -14,7 +14,11 @@ describe("DBAPI Test", ()=>{
         });
         expect(1).toBe(1);
 
-        await DBAPI.query("select 1 as a ", [1]).then( (rows : OkPacket)  =>{
+        await DBAPI.query("select 1 as a ", [1]).then( (rows : OkPacket[])  =>{
+            console.log(rows);
+        });
+
+        await DBAPI.query("select userEmail, userName from users where 1=1 and UserEmail =? limit 1 ", ["callakrsos@naver.com"]).then( (rows : OkPacket[])  =>{
             console.log(rows);
         });
 

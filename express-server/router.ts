@@ -17,7 +17,7 @@ exports.route = function(app : Application){
     app.get("/api-service/oauth/userInfo", authorize.userInfo);
     app.get("/api-service/oauth/getApiKey", authorize.getApiKey);
 
-    app.get("/api-service/oauth/login", login.doLogin);
+    app.post("/api-service/oauth/login", login.doLogin);
 
     app.get("/api-service/News/:newsType", news.news);
     app.get("/api-service/News/exchange", exchange.exchange);

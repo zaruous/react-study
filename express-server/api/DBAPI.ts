@@ -48,9 +48,9 @@ const getPool  =  (): Pool => {
  */
 
 
-const query = (sql : string, params : any|any[]|{ [param: string]: any }): Promise<OkPacket> =>{
+const query = (sql : string, params : any|any[]|{ [param: string]: any }): Promise<OkPacket[]> =>{
     return new Promise((resolve, reject) => {
-        getPool().query<OkPacket>(sql ,params , (err: QueryError|null, rows : OkPacket ) => {
+        getPool().query<OkPacket[]>(sql ,params , (err: QueryError|null, rows : OkPacket[] ) => {
             if(err) {  console.log(err); reject(err); return; }
             resolve(rows);
         });

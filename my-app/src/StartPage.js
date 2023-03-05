@@ -1,9 +1,10 @@
-import CChildren from './CChildren';
+import StartPageContent from './StartPageContent';
 
 const StartPage = ({prop}) => {
+
     return (
         <div>
-            <CChildren {...prop}></CChildren>
+            <StartPageContent prop={{...prop}}></StartPageContent>
         </div>
     );
 };

@@ -88,6 +88,10 @@ const userInfo =  (req : Request, res : Response) => {
 
             console.log(JSON.stringify(ares.data));
 
+            //res.cookie('access_token', accessToken, { httpOnly: true, secure: true, sameSite: 'none' });
+            //res.cookie('refresh_token', refreshToken, { httpOnly: true, secure: true, sameSite: 'none' });
+
+
             res.send(JSON.stringify(ares.data));
 
             // LoginApi.doLogin( ares.data.kakao_account.profile.email,(userInfo: UserInfo)=>{

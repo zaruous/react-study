@@ -5,21 +5,23 @@ import DiaryWrite from "./DiaryWrite";
 import DiaryList from "./DiaryList";
 import NotFound from "./NotFound";
 import News from "./News";
-import UserList from "./UserList";
+import UserList from "./components/user/UserList";
 import StartPage from "./StartPage";
 import KakaoMap from "./KakaoMap";
 import RegexComponent from './RegexComponent'
 import GaleryContainer from "./GaleryContainer";
 import Modal from 'react-modal';
-import {useCallback, useLayoutEffect, useRef, useState} from "react";
+import {useCallback, useContext, useEffect, useLayoutEffect, useRef, useState} from "react";
 import CallModalPopup from "./CallModalPopup";
 import Calendar from "./components/cal/Calendar";
 import Carousel from "./components/layout/Carousel";
 import {get} from "./api/Request";
-import {saveStorage, getStorage } from "./api/Storage";
+import {saveStorage, getStorage, CONST_KEY_USER_INFO } from "./api/Storage";
 import UseRefStudy from "./UseRefStudy";
 import DefaultChart from "./components/chart/DefaultChart";
 import ImageCarouselView from "./components/img/ImageCarouselView";
+import SignUp from "./components/user/SignUp";
+import {UserInfoContext, UserInfo} from "./context/UserInfoContext";
 
 function App()
 {
@@ -28,9 +30,19 @@ function App()
     const [status, setStatus] = useState("");
     const params = new URL(document.location).searchParams;
     const modalRef = useRef();
-    const [profileImg, setProfileImg] = useState("");
-    const [nickname, setNickname] = useState("");
+    const initUserInfo = useCallback(()=>{
+        if(getStorage(CONST_KEY_USER_INFO)){
+            return JSON.parse(getStorage(CONST_KEY_USER_INFO))
+        }
+        return {};
+    });
+    const [userInfo, setUserInfo] = useState(initUserInfo());
 
+
+
+
+
+    //const [userInfo, setUserInfo] = useContext(UserInfoContext);
 
     /**
      *
@@ -146,8 +158,10 @@ function App()
 
 
 
-      return (
+    return (
+
         <div className="App">
+            <UserInfoContext.Provider value={{userInfo}}>
             {(loginVisible && (
                 <Modal isOpen={loginVisible} onRequestClose={closeModal} style={customModalStyle} ref={modalRef}>
                     <div style={contentStyle}>
@@ -160,45 +174,41 @@ function App()
                 <header className="App-header" style={headerStyle}>
                     <a
                         className="home-link"
-                        href="./"
+                        href="/"
                         target="_self"
                     >Home</a>
                     <span style={headerRightStyle}>
-                        {{profileImg} && <img alt={""} style={profileImgStyle} src={profileImg}></img> }
-                        <span>{nickname}</span>
+                        <img alt={""} style={profileImgStyle} src={userInfo.profileImage}></img>
+                        <span>{userInfo.nickName}</span>
                     </span>
 
                 </header>
                 <Category></Category>
                 <Routes>
-                    <Route path="/" element={<StartPage prop={{
-                        showPopup: showPopup,
-                        setProfileImg: setProfileImg,
-                        setNickname: setNickname
-                    }}/>} ></Route>
+                    <Route path="/" element={<StartPage />} ></Route>
                     <Route path="/diary-write" element={ <DiaryWrite diaryItem={diaryItem}/> }></Route>
                     <Route path="/diary-list" element={ <DiaryList diaryItem={diaryItem}/> }></Route>
                     <Route path="/regex" element={ <RegexComponent/> }></Route>
                     <Route path="/galery" element={ <GaleryContainer/> }></Route>
                     <Route path="/news" element={ <News/> }></Route>
-                    <Route path="/userList" element={ <UserList/> }></Route>
+
+                    <Route path="/user/userList" element={ <UserList/> }></Route>
+                    <Route path="/user/signUp" element={ <SignUp/> }></Route>
+
                     <Route path="/kakaomap" element={ <KakaoMap/> }></Route>
-
-
-                    <Route path="/callModalPopup" element={ <CallModalPopup prop={{
-                        showPopup: showPopup,
-                        setProfileImg: setProfileImg,
-                        setNickname: setNickname
-                    }}/> }></Route>
+                    <Route path="/callModalPopup" element={ <CallModalPopup/> }></Route>
                     <Route path="/calendar" element={ <Calendar/> }></Route>
                     <Route path="/useRefStudy" element={ <UseRefStudy/> }></Route>
                     <Route path="/images" element={ <ImageCarouselView/> }></Route>
                     <Route path="/chart" element={ <DefaultChart/> }></Route>
+
+
                     <Route path="*" element={ <NotFound/> }></Route>
                 </Routes>
 
             </BrowserRouter>
             <div style={divStatusStyle}>{status}</div>
+            </UserInfoContext.Provider>
         </div>
       );
 }
